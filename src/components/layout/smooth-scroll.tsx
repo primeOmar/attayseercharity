@@ -1,9 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import Lenis from "lenis";
-import { gsap, ScrollTrigger } from "@/lib/animation/gsap";
-import { attachSectionSnap } from "@/lib/animation/section-snap";
+import type Lenis from "lenis";
 
 let instance: Lenis | null = null;
 
@@ -37,7 +35,8 @@ export function scrollToElement(el: HTMLElement, offset = 0) {
 /**
  * Lenis smooth scrolling, driven by GSAP's ticker so ScrollTrigger stays in sync.
  * Skipped entirely for reduced-motion users and coarse pointers (touch devices
- * already have excellent native momentum scrolling).
+ * already have excellent native momentum scrolling) — and the libraries are
+ * code-split, so phones never download Lenis or GSAP from the shared layout.
  */
 export function SmoothScroll() {
   useEffect(() => {
@@ -45,38 +44,62 @@ export function SmoothScroll() {
     const coarse = window.matchMedia("(pointer: coarse)").matches;
     if (reduce || coarse) return;
 
-    const lenis = new Lenis({ lerp: 0.1, wheelMultiplier: 1 });
-    instance = lenis;
-    lenis.on("scroll", ScrollTrigger.update);
-    // Wheel gestures glide section-to-section on pages that mark [data-snap].
-    const detachSnap = attachSectionSnap(lenis);
+    let cleanup: (() => void) | undefined;
+    let cancelled = false;
 
-    const tick = (time: number) => lenis.raf(time * 1000);
-    gsap.ticker.add(tick);
-    gsap.ticker.lagSmoothing(0);
-
-    // In-page anchor links should glide too.
-    const onClick = (e: MouseEvent) => {
-      const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[href^="#"]');
-      if (!a) return;
-      const id = a.getAttribute("href");
-      if (!id || id === "#") return;
-      const el = document.querySelector<HTMLElement>(id);
-      if (!el) return;
-      e.preventDefault();
-      lenis.scrollTo(el, { offset: -80 });
-      el.focus({ preventScroll: true });
-    };
-    document.addEventListener("click", onClick);
+    Promise.all([import("lenis"), import("@/lib/animation/gsap"), import("@/lib/animation/section-snap")]).then(
+      ([{ default: LenisCtor }, { gsap, ScrollTrigger }, { attachSectionSnap }]) => {
+        if (cancelled) return;
+        cleanup = start(LenisCtor, gsap, ScrollTrigger, attachSectionSnap);
+      },
+    );
 
     return () => {
-      document.removeEventListener("click", onClick);
-      detachSnap();
-      gsap.ticker.remove(tick);
-      lenis.destroy();
-      instance = null;
+      cancelled = true;
+      cleanup?.();
     };
   }, []);
 
   return null;
+}
+
+type Gsap = typeof import("@/lib/animation/gsap");
+
+function start(
+  LenisCtor: typeof Lenis,
+  gsap: Gsap["gsap"],
+  ScrollTrigger: Gsap["ScrollTrigger"],
+  attachSectionSnap: typeof import("@/lib/animation/section-snap").attachSectionSnap,
+) {
+  const lenis = new LenisCtor({ lerp: 0.1, wheelMultiplier: 1 });
+  instance = lenis;
+  lenis.on("scroll", ScrollTrigger.update);
+  // Wheel gestures glide section-to-section on pages that mark [data-snap].
+  const detachSnap = attachSectionSnap(lenis);
+
+  const tick = (time: number) => lenis.raf(time * 1000);
+  gsap.ticker.add(tick);
+  gsap.ticker.lagSmoothing(0);
+
+  // In-page anchor links should glide too.
+  const onClick = (e: MouseEvent) => {
+    const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[href^="#"]');
+    if (!a) return;
+    const id = a.getAttribute("href");
+    if (!id || id === "#") return;
+    const el = document.querySelector<HTMLElement>(id);
+    if (!el) return;
+    e.preventDefault();
+    lenis.scrollTo(el, { offset: -80 });
+    el.focus({ preventScroll: true });
+  };
+  document.addEventListener("click", onClick);
+
+  return () => {
+    document.removeEventListener("click", onClick);
+    detachSnap();
+    gsap.ticker.remove(tick);
+    lenis.destroy();
+    instance = null;
+  };
 }

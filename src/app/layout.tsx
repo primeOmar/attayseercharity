@@ -50,10 +50,8 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${inter.variable} ${instrumentSerif.variable} antialiased`} suppressHydrationWarning>
-      <head>
-        {/* Enables reveal styles only when JS runs, so content is never hidden without it. */}
-        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
-      </head>
+      {/* Reveal animations switch on only after hydration (see RevealObserver),
+          so content is fully visible if JavaScript is slow or unsupported. */}
       <body id="top">
         <JsonLd data={[organizationJsonLd(), websiteJsonLd()]} />
         <SiteHeader />

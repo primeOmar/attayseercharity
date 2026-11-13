@@ -1,31 +1,30 @@
 "use client";
 
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { useState, type FormEvent } from "react";
 import { ArrowRight, Check } from "lucide-react";
 
-const schema = z.object({
-  email: z.email("Please enter a valid email address."),
-});
-type Values = z.infer<typeof schema>;
+/** Pragmatic email check; the server will re-validate once signup is connected. */
+const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 /**
  * Newsletter signup (frontend only).
- * TODO(backend): POST to the mailing-list provider. Until then the success
- * state explicitly says nothing was sent.
+ * Dependency-free on purpose: it ships in the footer of every page, so it must
+ * stay tiny. TODO(backend): POST to the mailing-list provider. Until then the
+ * success state explicitly says nothing was sent.
  */
 export function NewsletterForm() {
   const [done, setDone] = useState(false);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<Values>({ resolver: zodResolver(schema) });
+  const [error, setError] = useState<string | null>(null);
 
-  const onSubmit = async () => {
-    await new Promise((r) => setTimeout(r, 400));
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const email = String(new FormData(e.currentTarget).get("email") ?? "").trim();
+    if (!EMAIL.test(email)) {
+      setError("Please enter a valid email address.");
+      e.currentTarget.querySelector<HTMLInputElement>("input")?.focus();
+      return;
+    }
+    setError(null);
     setDone(true);
   };
 
@@ -41,33 +40,34 @@ export function NewsletterForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate className="w-full">
+    <form onSubmit={onSubmit} noValidate className="w-full">
       <label htmlFor="newsletter-email" className="sr-only">
         Email address
       </label>
       <div className="flex items-center border-b border-ivory-100/30 transition-colors focus-within:border-gold-400">
         <input
           id="newsletter-email"
+          name="email"
           type="email"
+          inputMode="email"
           autoComplete="email"
           placeholder="Your email address"
-          aria-invalid={errors.email ? true : undefined}
-          aria-describedby={errors.email ? "newsletter-error" : undefined}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={error ? "newsletter-error" : undefined}
+          onChange={() => error && setError(null)}
           className="min-w-0 flex-1 bg-transparent py-4 text-base text-ivory-50 placeholder:text-ivory-200/75 focus:outline-none"
-          {...register("email")}
         />
         <button
           type="submit"
-          disabled={isSubmitting}
-          className="grid size-11 shrink-0 place-items-center rounded-full bg-gold-metal text-ink-950 transition-transform hover:scale-105 disabled:opacity-60"
+          className="grid size-11 shrink-0 place-items-center rounded-full bg-gold-metal text-ink-950 transition-transform hover:scale-105"
         >
           <ArrowRight aria-hidden="true" className="size-4" />
           <span className="sr-only">Subscribe</span>
         </button>
       </div>
-      {errors.email && (
+      {error && (
         <p id="newsletter-error" role="alert" className="mt-2 text-sm text-red-500">
-          {errors.email.message}
+          {error}
         </p>
       )}
     </form>

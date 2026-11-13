@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
-    "@hookform/resolvers": "^7.0.6",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "gsap": "^3.15.1",
@@ -20,9 +19,7 @@
     "next": "16.4.6",
     "react": "19.3.0",
     "react-dom": "19.3.0",
-    "react-hook-form": "^7.92.0",
-    "tailwind-merge": "^3.7.0",
-    "zod": "^4.6.7"
+    "tailwind-merge": "^3.7.0"
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "4.3.3",
@@ -33,5 +30,14 @@
     "eslint-config-next": "16.4.6",
     "tailwindcss": "4.3.3",
     "typescript": "^5"
-  }
+  },
+  "browserslist": [
+    "chrome >= 87",
+    "edge >= 88",
+    "firefox >= 78",
+    "safari >= 14",
+    "ios_saf >= 14",
+    "samsung >= 14",
+    "and_chr >= 87"
+  ]
 }

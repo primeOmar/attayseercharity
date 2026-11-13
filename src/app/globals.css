@@ -231,49 +231,49 @@
    SCROLL REVEALS (progressive enhancement — see RevealObserver)
    ========================================================================== */
 
-.js [data-reveal] {
+.reveal-ready [data-reveal] {
   transition:
     opacity 1s var(--ease-out-expo),
     transform 1.2s var(--ease-out-expo),
     clip-path 1.4s var(--ease-out-expo);
 }
-.js [data-reveal]:not([data-revealed]) {
+.reveal-ready [data-reveal]:not([data-revealed]) {
   opacity: 0;
   transform: translateY(2rem);
 }
 /* The clip lives on the children: an element clipped to nothing is treated as
    non-intersecting by IntersectionObserver, so the wrapper itself must stay unclipped. */
-.js [data-reveal="image"]:not([data-revealed]) {
+.reveal-ready [data-reveal="image"]:not([data-revealed]) {
   opacity: 1;
   transform: none;
 }
-.js [data-reveal="image"] > * {
+.reveal-ready [data-reveal="image"] > * {
   clip-path: inset(0 0 0 0);
   transform: scale(1);
   transition:
     clip-path 1.4s var(--ease-out-expo),
     transform 1.8s var(--ease-out-expo);
 }
-.js [data-reveal="image"]:not([data-revealed]) > * {
+.reveal-ready [data-reveal="image"]:not([data-revealed]) > * {
   clip-path: inset(100% 0 0 0);
   transform: scale(1.12);
 }
-.js [data-reveal="lines"] [data-line] {
+.reveal-ready [data-reveal="lines"] [data-line] {
   transition: transform 1.2s var(--ease-out-expo);
 }
-.js [data-reveal="lines"]:not([data-revealed]) {
+.reveal-ready [data-reveal="lines"]:not([data-revealed]) {
   opacity: 1;
   transform: none;
 }
-.js [data-reveal="lines"]:not([data-revealed]) [data-line] {
+.reveal-ready [data-reveal="lines"]:not([data-revealed]) [data-line] {
   transform: translateY(105%);
 }
-.js [data-reveal="lines"] .line-mask:nth-child(2) [data-line] { transition-delay: 90ms; }
-.js [data-reveal="lines"] .line-mask:nth-child(3) [data-line] { transition-delay: 180ms; }
-.js [data-reveal="bar"] {
+.reveal-ready [data-reveal="lines"] .line-mask:nth-child(2) [data-line] { transition-delay: 90ms; }
+.reveal-ready [data-reveal="lines"] .line-mask:nth-child(3) [data-line] { transition-delay: 180ms; }
+.reveal-ready [data-reveal="bar"] {
   transform-origin: left;
 }
-.js [data-reveal="bar"]:not([data-revealed]) {
+.reveal-ready [data-reveal="bar"]:not([data-revealed]) {
   opacity: 1;
   transform: scaleX(0);
 }
@@ -291,9 +291,9 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  .js [data-reveal]:not([data-revealed]),
-  .js [data-reveal]:not([data-revealed]) > *,
-  .js [data-reveal]:not([data-revealed]) [data-line] {
+  .reveal-ready [data-reveal]:not([data-revealed]),
+  .reveal-ready [data-reveal]:not([data-revealed]) > *,
+  .reveal-ready [data-reveal]:not([data-revealed]) [data-line] {
     opacity: 1 !important;
     transform: none !important;
     clip-path: none !important;
