@@ -65,12 +65,15 @@ export function SiteHeader() {
         )}
       >
         <div className="container-site flex h-16 items-center justify-between gap-3 sm:h-[4.5rem] sm:gap-6 lg:h-20">
-          <Link href="/" aria-label={`${site.name} — home`} className="relative z-10 min-w-0 shrink">
+          {/* The wordmark can't wrap, so it must never be squeezed: below 2xl it
+              only shares the row with the Donate + Menu buttons, which always fit. */}
+          <Link href="/" aria-label={`${site.name} — home`} className="relative z-10 min-w-0 shrink 2xl:shrink-0">
             <Logo priority tone={light ? "dark" : "light"} />
           </Link>
 
-          <nav aria-label="Primary" className="hidden xl:block">
-            <ul className="flex items-center gap-8">
+          {/* Inline nav needs ~1,400px with the logo and buttons; narrower screens use the Menu. */}
+          <nav aria-label="Primary" className="hidden 2xl:block">
+            <ul className="flex items-center gap-7">
               {mainNav.map((item) => {
                 const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
                 return (
