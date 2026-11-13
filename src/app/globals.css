@@ -1,26 +1,299 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ==========================================================================
+   DESIGN TOKENS
+   Brand hues sampled directly from the approved Attayseer Development
+   Foundation logo (public/brand/logo-full.png).
+   ========================================================================== */
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@theme {
+  /* Brand — red (central figure) */
+  --color-red-500: #df2025;
+  --color-red-600: #b80205;
+  --color-red-900: #4a0102;
+  /* Brand — green (book pages, wordmark) */
+  --color-green-400: #3fae2c;
+  --color-green-500: #299725;
+  --color-green-600: #1e851c;
+  --color-green-700: #0c5814;
+  --color-green-800: #074b0f;
+  --color-green-900: #053c0b;
+  --color-green-950: #032206;
+  /* Brand — metallic gold (ring, star, hand) */
+  --color-gold-200: #feef99;
+  --color-gold-300: #fcd460;
+  --color-gold-400: #f5c03a;
+  --color-gold-500: #f1b10f;
+  --color-gold-600: #d37621;
+  --color-gold-700: #b06401;
+  --color-gold-800: #a65905;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  /* Warm neutrals (earth, not cold grey) */
+  --color-ink-950: #0b0a08;
+  --color-ink-900: #12100d;
+  --color-ink-800: #1b1814;
+  --color-ink-700: #2a2620;
+  --color-ink-500: #6b645a;
+  --color-ink-400: #8f877b;
+  --color-ink-300: #b4ab9c;
+  --color-ivory-50: #fbf8f2;
+  --color-ivory-100: #f5f0e6;
+  --color-ivory-200: #ebe3d3;
+  --color-ivory-300: #ddd2bd;
+
+  /* Typography */
+  --font-display: var(--font-instrument-serif), "Times New Roman", serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* Fluid type scale */
+  --text-display-xl: clamp(3.25rem, 1.6rem + 7.4vw, 9.5rem);
+  --text-display-xl--line-height: 0.92;
+  --text-display-lg: clamp(2.75rem, 1.6rem + 5vw, 7rem);
+  --text-display-lg--line-height: 0.95;
+  --text-display-md: clamp(2.25rem, 1.5rem + 3.2vw, 4.75rem);
+  --text-display-md--line-height: 1;
+  --text-display-sm: clamp(1.75rem, 1.3rem + 1.8vw, 2.75rem);
+  --text-display-sm--line-height: 1.08;
+
+  /* Layout */
+  --container-site: 88rem;
+  --spacing-gutter: clamp(1rem, 0.5rem + 2.5vw, 3rem);
+  --spacing-section: clamp(5rem, 3rem + 8vw, 11rem);
+
+  /* Radii — restrained: mostly square, soft only on controls */
+  --radius-card: 0.25rem;
+  --radius-pill: 999px;
+
+  /* Motion */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+  --duration-fast: 200ms;
+  --duration-base: 450ms;
+  --duration-slow: 900ms;
+
+  /* Shadows */
+  --shadow-lift: 0 30px 60px -20px rgb(11 10 8 / 0.45);
+
+  /* Breakpoints (Tailwind defaults + ultrawide) */
+  --breakpoint-3xl: 120rem;
+
+  --animate-line-up: line-up 1.1s var(--ease-out-expo) backwards;
+  --animate-fade-up: fade-up 1s var(--ease-out-expo) backwards;
+  --animate-hero-zoom: hero-zoom 2.4s var(--ease-out-expo) backwards;
+  /* "backwards" (not "both") so scroll-driven inline styles take over after the intro. */
+  --animate-hero-open: hero-open 1.8s var(--ease-in-out-quart) 0.1s backwards;
+  --animate-scroll-cue: scroll-cue 2.2s var(--ease-in-out-quart) infinite;
+
+  @keyframes line-up {
+    from { transform: translateY(105%); }
+    to { transform: translateY(0); }
+  }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(1.25rem); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes hero-open {
+    from { clip-path: inset(0% 5% 10% 5% round 0 0 2.5rem 2.5rem); }
+    to { clip-path: inset(0% 0% 0% 0% round 0rem); }
+  }
+  @keyframes scroll-cue {
+    0% { transform: scaleY(0); transform-origin: top; }
+    45% { transform: scaleY(1); transform-origin: top; }
+    55% { transform: scaleY(1); transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+  @keyframes hero-zoom {
+    from { transform: scale(1.12); }
+    to { transform: scale(1); }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes grow {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    scroll-padding-top: 6rem;
+  }
+
+  body {
+    background: var(--color-ivory-50);
+    color: var(--color-ink-950);
+    font-family: var(--font-sans);
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background: var(--color-gold-500);
+    color: var(--color-ink-950);
+  }
+
+  /* Green focus ring on light surfaces; gold on dark ones (both ≥ 3:1). */
+  :focus-visible {
+    outline: 2px solid var(--color-green-700);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  [data-surface="dark"] :focus-visible {
+    outline-color: var(--color-gold-400);
+  }
+
+  /* Lenis */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-stopped {
+    overflow: clip;
+  }
+}
+
+/* Brand gradients — taken from the logo's metallic gold, green pages and red figure. */
+:root {
+  --gradient-gold: linear-gradient(135deg, #feef99 0%, #fcd460 22%, #f1b10f 48%, #d37621 78%, #b06401 100%);
+  --gradient-gold-soft: linear-gradient(135deg, #fcd460 0%, #f1b10f 55%, #d37621 100%);
+  --gradient-green: linear-gradient(135deg, #299725 0%, #0c5814 55%, #053c0b 100%);
+  --gradient-green-deep: radial-gradient(120% 90% at 15% 0%, #0c5814 0%, #053c0b 45%, #032206 100%);
+  --gradient-red: linear-gradient(135deg, #df2025 0%, #b80205 60%, #7e0103 100%);
+  /* The open book's page edges: red / gold / green bands */
+  --gradient-stripe: linear-gradient(90deg, #b80205 0%, #df2025 22%, #f1b10f 40%, #fcd460 50%, #f1b10f 60%, #299725 78%, #0c5814 100%);
+}
+
+@utility bg-gold-metal {
+  background-image: var(--gradient-gold);
+}
+@utility bg-green-metal {
+  background-image: var(--gradient-green);
+}
+@utility bg-green-deep {
+  background-image: var(--gradient-green-deep);
+}
+@utility bg-red-metal {
+  background-image: var(--gradient-red);
+}
+@utility bg-brand-stripe {
+  background-image: var(--gradient-stripe);
+}
+/* Gradient text — use on display type only (large sizes keep contrast). */
+@utility text-gold-metal {
+  background-image: var(--gradient-gold-soft);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+@utility text-green-metal {
+  background-image: var(--gradient-green);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@layer components {
+  .container-site {
+    width: 100%;
+    max-width: var(--container-site);
+    margin-inline: auto;
+    padding-inline: var(--spacing-gutter);
+  }
+
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+
+  /* Masked line used by CSS/GSAP text reveals */
+  .line-mask {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.08em;
+    margin-bottom: -0.08em;
+  }
+}
+
+/* ==========================================================================
+   SCROLL REVEALS (progressive enhancement — see RevealObserver)
+   ========================================================================== */
+
+.js [data-reveal] {
+  transition:
+    opacity 1s var(--ease-out-expo),
+    transform 1.2s var(--ease-out-expo),
+    clip-path 1.4s var(--ease-out-expo);
+}
+.js [data-reveal]:not([data-revealed]) {
+  opacity: 0;
+  transform: translateY(2rem);
+}
+/* The clip lives on the children: an element clipped to nothing is treated as
+   non-intersecting by IntersectionObserver, so the wrapper itself must stay unclipped. */
+.js [data-reveal="image"]:not([data-revealed]) {
+  opacity: 1;
+  transform: none;
+}
+.js [data-reveal="image"] > * {
+  clip-path: inset(0 0 0 0);
+  transform: scale(1);
+  transition:
+    clip-path 1.4s var(--ease-out-expo),
+    transform 1.8s var(--ease-out-expo);
+}
+.js [data-reveal="image"]:not([data-revealed]) > * {
+  clip-path: inset(100% 0 0 0);
+  transform: scale(1.12);
+}
+.js [data-reveal="lines"] [data-line] {
+  transition: transform 1.2s var(--ease-out-expo);
+}
+.js [data-reveal="lines"]:not([data-revealed]) {
+  opacity: 1;
+  transform: none;
+}
+.js [data-reveal="lines"]:not([data-revealed]) [data-line] {
+  transform: translateY(105%);
+}
+.js [data-reveal="lines"] .line-mask:nth-child(2) [data-line] { transition-delay: 90ms; }
+.js [data-reveal="lines"] .line-mask:nth-child(3) [data-line] { transition-delay: 180ms; }
+.js [data-reveal="bar"] {
+  transform-origin: left;
+}
+.js [data-reveal="bar"]:not([data-revealed]) {
+  opacity: 1;
+  transform: scaleX(0);
+}
+
+/* ==========================================================================
+   REDUCED MOTION — honour the user's OS setting everywhere
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .js [data-reveal]:not([data-revealed]),
+  .js [data-reveal]:not([data-revealed]) > *,
+  .js [data-reveal]:not([data-revealed]) [data-line] {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
 }
