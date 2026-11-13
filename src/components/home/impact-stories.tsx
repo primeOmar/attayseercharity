@@ -43,7 +43,7 @@ export function ImpactStories() {
               <div>
                 <p className="eyebrow text-green-700">{feature.category}</p>
                 <h3 className="mt-3 font-display text-[clamp(2rem,1.5rem+1.8vw,3.25rem)] leading-[1.02]">
-                  <Link href="/news" className="after:absolute after:inset-0 after:content-['']">
+                  <Link href={`/impact#${feature.slug}`} className="after:absolute after:inset-0 after:content-['']">
                     {feature.title}
                   </Link>
                 </h3>
@@ -80,7 +80,7 @@ export function ImpactStories() {
                   <div className="flex flex-col">
                     <p className="eyebrow text-green-700">{story.category}</p>
                     <h3 className="mt-2 font-display text-2xl leading-tight sm:text-[1.75rem]">
-                      <Link href="/news" className="after:absolute after:inset-0 after:content-['']">
+                      <Link href={`/impact#${story.slug}`} className="after:absolute after:inset-0 after:content-['']">
                         {story.title}
                       </Link>
                     </h3>

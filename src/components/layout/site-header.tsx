@@ -186,7 +186,7 @@ function MenuOverlay({ onClose, pathname }: { onClose: () => void; pathname: str
     };
   }, [onClose]);
 
-  const links = [...mainNav, { label: "Donate", href: "/donate", description: "Give once or monthly" }];
+  const links = [...mainNav, { label: "Donate", href: "/donate", description: "Ways to support our work" }];
 
   return (
     <motion.div

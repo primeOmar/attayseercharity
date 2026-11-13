@@ -33,6 +33,8 @@ export interface Cause {
   tone: BrandTone;
   /** Toggle off causes the foundation does not run. */
   active: boolean;
+  /** Reported or upcoming work under this programme. */
+  highlights?: { kind: "reported" | "upcoming"; text: string }[];
 }
 
 export interface Campaign {

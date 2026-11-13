@@ -57,6 +57,9 @@ export const causes: Cause[] = [
     image: images.causeEducation,
     tone: "gold",
     active: true,
+    highlights: [
+      { kind: "reported", text: "Sponsored 10 students in January 2026, through individual donations from Suleiman Muhammed." },
+    ],
   },
   {
     slug: "orphan-and-family-support",
@@ -67,6 +70,9 @@ export const causes: Cause[] = [
     image: images.causeFamily,
     tone: "red",
     active: true,
+    highlights: [
+      { kind: "upcoming", text: "A support drive in January 2027 to help orphans and other vulnerable learners return to school smoothly." },
+    ],
   },
   {
     slug: "poverty-alleviation",
@@ -77,6 +83,9 @@ export const causes: Cause[] = [
     image: images.causeFood,
     tone: "green",
     active: true,
+    highlights: [
+      { kind: "upcoming", text: "A dry meal feeding programme planned for February 2027, subject to the availability of funds." },
+    ],
   },
   {
     slug: "women-and-youth-empowerment",
@@ -87,6 +96,11 @@ export const causes: Cause[] = [
     image: images.heroSmile,
     tone: "gold",
     active: true,
+    highlights: [
+      { kind: "reported", text: "500 sanitary towels and 800 inner garments for vulnerable students in Maiella Ward (March 2026)." },
+      { kind: "reported", text: "Full jerseys for six football teams and one basketball team." },
+      { kind: "upcoming", text: "Skills development, mentorship and livelihood support, subject to programme planning and resources." },
+    ],
   },
   {
     slug: "community-development",
@@ -97,6 +111,9 @@ export const causes: Cause[] = [
     image: images.causeCommunity,
     tone: "green",
     active: true,
+    highlights: [
+      { kind: "upcoming", text: "Recognising Talents — a community event in Naivasha, December 2026." },
+    ],
   },
 ];
 
