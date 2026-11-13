@@ -60,8 +60,10 @@
   --spacing-gutter: clamp(1rem, 0.5rem + 2.5vw, 3rem);
   --spacing-section: clamp(5rem, 3rem + 8vw, 11rem);
 
-  /* Radii — restrained: mostly square, soft only on controls */
+  /* Radii — photos get a soft curve; controls are pills */
   --radius-card: 0.25rem;
+  --radius-photo: 1.5rem;
+  --radius-photo-sm: 0.875rem;
   --radius-pill: 999px;
 
   /* Motion */

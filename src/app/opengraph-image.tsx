@@ -32,7 +32,7 @@ export default async function Image() {
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={emblemSrc} alt="" width={158} height={150} style={{ marginBottom: 28 }} />
-          <div style={{ fontSize: 80, color: "#fbf8f2", lineHeight: 1, fontFamily: "serif" }}>{site.tagline}</div>
+          <div style={{ fontSize: 64, color: "#fbf8f2", lineHeight: 1.05, textAlign: "center", maxWidth: 900, fontFamily: "serif" }}>{site.tagline}</div>
           <div style={{ fontSize: 28, color: "#fcd460", marginTop: 22, letterSpacing: 5, textTransform: "uppercase" }}>
             {site.name}
           </div>

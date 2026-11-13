@@ -24,7 +24,8 @@ export function TransparencySection() {
             {transparency.body}
           </p>
 
-          {/* Allocation */}
+          {/* Allocation — shown only once a split is published */}
+          {transparency.allocation.length > 0 && (
           <figure data-reveal className="mt-12">
             <figcaption className="mb-4 flex flex-wrap items-center justify-between gap-3">
               <span className="text-sm font-medium tracking-wide uppercase">How each gift is allocated</span>
@@ -47,6 +48,7 @@ export function TransparencySection() {
               ))}
             </dl>
           </figure>
+          )}
         </div>
 
         <div className="lg:col-span-6 lg:col-start-7">

@@ -85,7 +85,7 @@ export function CausesIndex({ causes }: { causes: Cause[] }) {
 
                 {/* Mobile detail */}
                 <span className="col-span-3 grid grid-cols-[6rem_1fr] gap-4 lg:hidden">
-                  <span className="relative block aspect-square overflow-hidden rounded-md">
+                  <span className="relative block aspect-square overflow-hidden rounded-photo-sm">
                     <Image src={cause.image.src} alt="" fill sizes="6rem" className="object-cover" />
                   </span>
                   <span className="text-[0.95rem] leading-relaxed text-ink-700">{cause.summary}</span>
@@ -112,7 +112,7 @@ export function CausesIndex({ causes }: { causes: Cause[] }) {
       {/* Desktop sticky preview */}
       <div className="hidden lg:col-span-5 lg:block">
         <div className="sticky top-28">
-          <div className="relative aspect-[4/5] overflow-hidden rounded-lg bg-ivory-200 shadow-lift">
+          <div className="relative aspect-[4/5] isolate overflow-hidden rounded-photo bg-ivory-200 shadow-lift">
             {causes.map((cause, i) => (
               <Image
                 key={cause.slug}
@@ -140,7 +140,7 @@ export function CausesIndex({ causes }: { causes: Cause[] }) {
             <button
               type="button"
               onClick={() => setPlayPref(!playing)}
-              aria-label={playing ? "Pause causes tour" : "Play causes tour"}
+              aria-label={playing ? "Pause programmes tour" : "Play programmes tour"}
               className="absolute top-4 right-4 grid size-10 place-items-center rounded-full bg-white/85 text-ink-950 backdrop-blur-sm transition-colors hover:bg-green-700 hover:text-ivory-50"
             >
               {playing ? <Pause aria-hidden="true" className="size-4" /> : <Play aria-hidden="true" className="size-4" />}

@@ -41,9 +41,15 @@ export interface Campaign {
   causeSlug: string;
   summary: string;
   image: ImageAsset;
-  goal: number;
-  raised: number;
-  currency: CurrencyCode;
+  /** Human-readable timing, e.g. "December 2026". */
+  when?: string;
+  /**
+   * Funding target and amount raised. Omit both for initiatives without a
+   * published target — cards then show timing and an enquiry CTA instead.
+   */
+  goal?: number;
+  raised?: number;
+  currency?: CurrencyCode;
   /** ISO date. Optional so open-ended appeals are possible. */
   endsOn?: string;
   featured: boolean;
@@ -67,6 +73,8 @@ export interface Story {
   excerpt: string;
   category: string;
   image: ImageAsset;
+  /** Human-readable date of the activity, e.g. "9 March 2026". */
+  date?: string;
   readingMinutes: number;
   /** False = illustrative placeholder editorial. */
   verified: boolean;

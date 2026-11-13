@@ -108,7 +108,7 @@ export function CampaignRail({ children, label }: { children: ReactNode; label: 
           <span className="eyebrow shrink-0 text-ink-500 tabular-nums" aria-hidden="true">
             {String(pos.index + 1).padStart(2, "0")} / {String(pos.pages).padStart(2, "0")}
           </span>
-          <ol className="flex max-w-xs flex-1 gap-2" aria-label="Campaign positions">
+          <ol className="flex max-w-xs flex-1 gap-2" aria-label="Initiative positions">
             {Array.from({ length: pos.pages }, (_, i) => (
               <li key={i} className="flex-1">
                 <button
@@ -140,11 +140,11 @@ export function CampaignRail({ children, label }: { children: ReactNode; label: 
         </div>
 
         <div className="flex shrink-0 gap-2">
-          <RailButton label={playing ? "Pause campaign tour" : "Play campaign tour"} onClick={() => setPlayPref(!playing)}>
+          <RailButton label={playing ? "Pause initiatives tour" : "Play initiatives tour"} onClick={() => setPlayPref(!playing)}>
             {playing ? <Pause className="size-4" /> : <Play className="size-4" />}
           </RailButton>
           <RailButton
-            label="Previous campaigns"
+            label="Previous initiatives"
             className="hidden sm:grid"
             disabled={atStart}
             onClick={() => {
@@ -155,7 +155,7 @@ export function CampaignRail({ children, label }: { children: ReactNode; label: 
             <ArrowLeft className="size-4" />
           </RailButton>
           <RailButton
-            label="Next campaigns"
+            label="Next initiatives"
             className="hidden sm:grid"
             disabled={atEnd}
             onClick={() => {

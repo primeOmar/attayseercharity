@@ -25,7 +25,7 @@ export function DonationProcess({ steps }: { steps: ProcessStep[] }) {
   return (
     <section aria-labelledby="process-title" className="bg-ivory-100 text-ink-950">
       <h2 id="process-title" className="sr-only">
-        How your donation works
+        How your support works
       </h2>
       <MobileSteps steps={steps} />
       <DesktopJourney steps={steps} />
@@ -74,7 +74,7 @@ function DesktopJourney({ steps }: { steps: ProcessStep[] }) {
           <div className="col-span-5">
             <p className="eyebrow flex items-center gap-3 text-green-700">
               <span aria-hidden="true" className="h-px w-8 bg-current" />
-              How your donation works
+              How your support works
             </p>
 
             <div className="mt-8 flex items-baseline gap-5" aria-hidden="true">
@@ -115,7 +115,7 @@ function DesktopJourney({ steps }: { steps: ProcessStep[] }) {
 
           {/* Framed photo */}
           <div className="col-span-4">
-            <div className="relative mx-auto aspect-[4/5] max-h-[68svh] overflow-hidden rounded-lg bg-ivory-200 shadow-lift">
+            <div className="relative mx-auto aspect-[4/5] max-h-[68svh] isolate overflow-hidden rounded-photo bg-ivory-200 shadow-lift">
               <motion.div style={{ scale: zoom }} className="absolute inset-0">
                 {steps.map((s, i) => (
                   <Image
@@ -192,13 +192,13 @@ function MobileSteps({ steps }: { steps: ProcessStep[] }) {
     <div className="container-site py-[var(--spacing-section)] lg:hidden">
       <p className="eyebrow flex items-center gap-3 text-green-700">
         <span aria-hidden="true" className="h-px w-8 bg-current" />
-        How your donation works
+        How your support works
       </p>
       <p className="mt-6 font-display text-display-md">{steps.map((s) => s.title).join(" → ")}</p>
       <ol className="mt-12 space-y-14">
         {steps.map((s, i) => (
           <li key={s.id} data-reveal>
-            <div data-reveal="image" className="relative aspect-[16/10] overflow-hidden rounded-lg">
+            <div data-reveal="image" className="relative aspect-[16/10] overflow-hidden rounded-photo">
               <Image src={s.image.src} alt={s.image.alt} fill sizes="100vw" className="object-cover" />
             </div>
             <p className="eyebrow mt-6 text-green-700">Step {pad2(i + 1)}</p>

@@ -11,11 +11,11 @@ export function ImpactStats() {
         <div className="lg:col-span-5">
           <Eyebrow tone="red">Our impact</Eyebrow>
           <h2 id="impact-title" data-reveal="lines" className="mt-6 font-display text-display-md">
-            <SplitLines lines={["Impact you can", "measure — and trust."]} italicLast accent="green" />
+            <SplitLines lines={["Commitment turned", "into community action."]} italicLast accent="green" />
           </h2>
           <p data-reveal className="mt-8 max-w-md text-lg leading-relaxed text-ink-700">
-            We count what matters and publish how we count it. Every figure here will be traceable to a programme
-            report.
+            Figures from our reported activities in 2026 — in Naivasha, Nakuru County and beyond — delivered with
+            partners including the Sule Initiative.
           </p>
           {hasUnverified && <SampleBadge tone="light" className="mt-8" />}
         </div>

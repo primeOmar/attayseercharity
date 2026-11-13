@@ -39,8 +39,8 @@ export default function HomePage() {
       <SnapSection label="Welcome"><Hero /></SnapSection>
       <SnapSection label="Mission"><Mission /></SnapSection>
       <SnapSection label="Impact"><ImpactStats /></SnapSection>
-      <SnapSection label="Campaigns"><FeaturedCampaigns /></SnapSection>
-      <SnapSection label="Causes"><CausesSection /></SnapSection>
+      <SnapSection label="Initiatives"><FeaturedCampaigns /></SnapSection>
+      <SnapSection label="Programmes"><CausesSection /></SnapSection>
       <SnapSection label="Stories"><ImpactStories /></SnapSection>
       <SnapSection label="How it works"><DonationProcess steps={donationProcess} /></SnapSection>
       <SnapSection label="Volunteer"><VolunteerSection /></SnapSection>

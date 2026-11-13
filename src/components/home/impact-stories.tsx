@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, Clock } from "lucide-react";
+import { ArrowUpRight, CalendarDays, Clock } from "lucide-react";
 import { stories } from "@/content/home";
 import { Eyebrow, SampleBadge, SplitLines } from "@/components/ui/primitives";
 import { ButtonLink } from "@/components/ui/button";
@@ -14,9 +14,9 @@ export function ImpactStories() {
       <div className="container-site">
         <div className="mb-14 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <Eyebrow tone="green">Impact stories</Eyebrow>
+            <Eyebrow tone="green">Activities & impact</Eyebrow>
             <h2 id="stories-title" data-reveal="lines" className="mt-6 font-display text-display-md">
-              <SplitLines lines={["Notes from", "the field."]} italicLast accent="green" />
+              <SplitLines lines={["Recent work", "in the field."]} italicLast accent="green" />
             </h2>
           </div>
           <div data-reveal className="flex flex-col items-start gap-5 lg:items-end">
@@ -30,7 +30,7 @@ export function ImpactStories() {
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-10">
           {/* Feature story */}
           <article className="group relative lg:col-span-7">
-            <div data-reveal="image" className="relative aspect-[4/3] overflow-hidden">
+            <div data-reveal="image" className="relative isolate aspect-[4/3] overflow-hidden rounded-photo">
               <Image
                 src={feature.image.src}
                 alt={feature.image.alt}
@@ -50,7 +50,15 @@ export function ImpactStories() {
                 <p className="mt-4 max-w-xl leading-relaxed text-ink-700">{feature.excerpt}</p>
               </div>
               <span className="flex items-center gap-2 text-sm text-ink-500">
-                <Clock aria-hidden="true" className="size-4" /> {feature.readingMinutes} min read
+                {feature.date ? (
+                  <>
+                    <CalendarDays aria-hidden="true" className="size-4" /> {feature.date}
+                  </>
+                ) : (
+                  <>
+                    <Clock aria-hidden="true" className="size-4" /> {feature.readingMinutes} min read
+                  </>
+                )}
               </span>
             </div>
           </article>
@@ -60,7 +68,7 @@ export function ImpactStories() {
             {rest.map((story, i) => (
               <li key={story.slug} data-reveal data-reveal-delay={i * 90}>
                 <article className="group relative grid grid-cols-[7.5rem_1fr] gap-5 py-6 sm:grid-cols-[10rem_1fr]">
-                  <div className="relative aspect-[4/5] overflow-hidden">
+                  <div className="relative isolate aspect-[4/5] overflow-hidden rounded-photo-sm">
                     <Image
                       src={story.image.src}
                       alt={story.image.alt}

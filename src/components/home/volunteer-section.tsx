@@ -16,7 +16,7 @@ export function VolunteerSection() {
 
       <div className="relative container-site grid items-center gap-14 lg:grid-cols-12 lg:gap-20">
         <div className="relative lg:col-span-6">
-          <div data-reveal="image" className="relative aspect-[4/5] overflow-hidden sm:aspect-[5/4] lg:aspect-[4/5]">
+          <div data-reveal="image" className="relative isolate aspect-[4/5] overflow-hidden rounded-photo sm:aspect-[5/4] lg:aspect-[4/5]">
             <Image
               src={volunteer.image.src}
               alt={volunteer.image.alt}

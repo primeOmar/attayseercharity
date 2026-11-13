@@ -41,7 +41,7 @@ export default async function CausePage({ params }: PageProps<"/causes/[slug]">)
         <section aria-labelledby="related-title" data-surface="dark" className="bg-ink-950 py-20">
           <div className="container-site">
             <h2 id="related-title" className="font-display text-display-sm text-ivory-50">
-              Campaigns in {cause.title.toLowerCase()}
+              Upcoming initiatives
             </h2>
             <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {related.map((c) => (

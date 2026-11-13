@@ -12,20 +12,20 @@ export function FeaturedCampaigns() {
     <section aria-labelledby="campaigns-title" className="overflow-hidden bg-ivory-50 pt-[var(--spacing-section)] pb-[calc(var(--spacing-section)*0.6)] text-ink-950">
       <div className="container-site mb-10 grid gap-8 lg:grid-cols-12 lg:items-end">
         <div className="lg:col-span-7">
-          <Eyebrow tone="red">Featured campaigns</Eyebrow>
+          <Eyebrow tone="red">Upcoming initiatives</Eyebrow>
           <h2 id="campaigns-title" data-reveal="lines" className="mt-6 font-display text-display-md">
-            <SplitLines lines={["Appeals that need", "you right now."]} italicLast accent="green" />
+            <SplitLines lines={["What we’re", "planning next."]} italicLast accent="green" />
           </h2>
         </div>
         <div data-reveal className="flex flex-col items-start gap-5 lg:col-span-5 lg:items-end lg:text-right">
           {unverified && <SampleBadge tone="light">Sample campaigns — figures for illustration only</SampleBadge>}
           <ButtonLink href="/campaigns" variant="ghost-dark" size="sm">
-            View all campaigns
+            All initiatives
           </ButtonLink>
         </div>
       </div>
 
-      <CampaignRail label="Featured campaigns">
+      <CampaignRail label="Upcoming initiatives">
         {featured.map((campaign, i) => (
           <div
             key={campaign.slug}

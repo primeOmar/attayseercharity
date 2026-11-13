@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { CalendarDays } from "lucide-react";
 import type { Campaign } from "@/types/content";
 import { causes } from "@/content/home";
 import { cn, formatCurrency, percentOf } from "@/lib/utils";
@@ -7,7 +8,18 @@ import { ButtonLink } from "@/components/ui/button";
 
 const toneBg = { red: "bg-red-metal", green: "bg-green-metal", gold: "bg-gold-metal" } as const;
 
+/** True when the campaign publishes a funding target to track against. */
+export function hasFunding(campaign: Campaign): campaign is Campaign & Required<Pick<Campaign, "goal" | "raised" | "currency">> {
+  return campaign.goal != null && campaign.raised != null && campaign.currency != null;
+}
+
+/** Where to send people who want to support an initiative. */
+export function supportHref(campaign: Campaign) {
+  return hasFunding(campaign) ? `/donate?campaign=${campaign.slug}` : `/contact?about=${campaign.slug}`;
+}
+
 export function FundingProgress({ campaign, tone = "dark" }: { campaign: Campaign; tone?: "dark" | "light" }) {
+  if (!hasFunding(campaign)) return null;
   const pct = percentOf(campaign.raised, campaign.goal);
   return (
     <div>
@@ -41,7 +53,7 @@ export function CampaignCard({ campaign, className }: { campaign: Campaign; clas
   return (
     <article
       className={cn(
-        "group relative flex flex-col overflow-hidden rounded-lg border border-ink-950/8 bg-white shadow-[0_24px_50px_-30px_rgb(11_10_8/0.35)] transition-[box-shadow,translate] duration-700 ease-out-expo hover:-translate-y-1.5 hover:shadow-[0_40px_70px_-30px_rgb(11_10_8/0.4)]",
+        "group relative flex flex-col isolate overflow-hidden rounded-photo border border-ink-950/8 bg-white shadow-[0_24px_50px_-30px_rgb(11_10_8/0.35)] transition-[box-shadow,translate] duration-700 ease-out-expo hover:-translate-y-1.5 hover:shadow-[0_40px_70px_-30px_rgb(11_10_8/0.4)]",
         className,
       )}
     >
@@ -75,14 +87,26 @@ export function CampaignCard({ campaign, className }: { campaign: Campaign; clas
         </h3>
         <p className="mt-3 text-[0.95rem] leading-relaxed text-ink-700">{campaign.summary}</p>
         <div className="mt-auto pt-8">
-          <FundingProgress campaign={campaign} tone="light" />
+          {hasFunding(campaign) ? (
+            <FundingProgress campaign={campaign} tone="light" />
+          ) : (
+            campaign.when && (
+              <p className="flex items-center gap-2 text-sm text-ink-700">
+                <CalendarDays aria-hidden="true" className="size-4 text-green-700" />
+                <span>
+                  <span className="sr-only">Planned for </span>
+                  {campaign.when}
+                </span>
+              </p>
+            )
+          )}
           <ButtonLink
-            href={`/donate?campaign=${campaign.slug}`}
+            href={supportHref(campaign)}
             size="sm"
             className="relative z-10 mt-6 w-full"
-            aria-label={`Donate to ${campaign.title}`}
+            aria-label={`${hasFunding(campaign) ? "Donate to" : "Support"} ${campaign.title}`}
           >
-            Donate
+            {hasFunding(campaign) ? "Donate" : "Support this initiative"}
           </ButtonLink>
         </div>
       </div>

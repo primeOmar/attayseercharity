@@ -133,7 +133,7 @@ export function Mission() {
               data-tile
               data-speed={p.speed}
               className={cn(
-                "absolute z-0 overflow-hidden rounded-lg shadow-lift will-change-transform",
+                "absolute z-0 overflow-hidden rounded-photo-sm shadow-lift will-change-transform",
                 "top-[var(--mt)] left-[var(--ml)] lg:top-[var(--t)] lg:left-[var(--l)]",
                 p.w,
                 p.desktopOnly && "hidden lg:block",

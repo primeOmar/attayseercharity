@@ -12,267 +12,245 @@ import { images } from "./images";
 /**
  * Homepage & shared programme content.
  *
- * ⚠️ SAMPLE CONTENT. Copy is draft marketing language for review. All numbers
- * carry `verified: false` and are rendered with a visible "sample data"
- * disclosure until finance confirms real figures.
+ * Source: the foundation's existing site, www.attayseer.org (Nov 2026) —
+ * Home, About Us, Our Programs, Activities & Impact, Get Involved and
+ * Contact & Transparency pages. Figures are as reported by the foundation.
+ *
+ * Photography is still interim stock (see images.ts) until the foundation's
+ * own activity photos are added.
  */
 
 export const hero = {
-  eyebrow: "Kenya · East Africa",
-  title: ["Hope is built,", "together."],
-  lede: "We work alongside communities to keep children learning, families healthy and water flowing — and we show you exactly where your gift goes.",
+  eyebrow: "Nakuru · Kenya",
+  title: ["Creating opportunities,", "transforming communities."],
+  lede: "A registered nonprofit supporting education, vulnerable families, livelihoods, women, youth and community development — with dignity, inclusion and accountability.",
   slides: [
-    { id: "education", label: "Education", caption: "Every child deserves a classroom to walk to.", image: images.heroSchoolWalk, tone: "gold" },
-    { id: "water", label: "Clean water", caption: "Safe water closer to home changes everything.", image: images.heroWaterWalk, tone: "green" },
-    { id: "community", label: "Community", caption: "Lasting change is led by communities themselves.", image: images.heroSmile, tone: "red" },
+    { id: "education", label: "Education", caption: "Reducing the barriers that keep learners out of school.", image: images.heroSchoolWalk, tone: "gold" },
+    { id: "families", label: "Families", caption: "Standing with orphans and vulnerable families.", image: images.heroWaterWalk, tone: "green" },
+    { id: "empowerment", label: "Women & youth", caption: "Opportunities for women and young people to thrive.", image: images.heroSmile, tone: "red" },
   ],
 } as const;
 
 export const mission = {
   eyebrow: "Our mission",
-  headline: ["We don’t hand out hope.", "We build it, side by side."],
+  headline: ["Dignity, opportunity", "and lasting change."],
   statement:
-    "Every programme starts by listening. We partner with local leaders, teachers, health workers and families to fund what they know will work — then we stay, measure, and report back honestly on what changed.",
+    "We advance human dignity and sustainable community development through education, social support, empowerment and responsive initiatives — working toward a society where everyone can access education, live with dignity, develop their potential and contribute to their community.",
 };
 
+/** As reported on the foundation's Activities & Impact page (2026). */
 export const impactStats: ImpactStat[] = [
-  { id: "families", label: "Families supported", value: 12500, suffix: "+", verified: false },
-  { id: "projects", label: "Projects completed", value: 86, verified: false },
-  { id: "donations", label: "Donations received", value: 48, prefix: "KES ", suffix: "M", verified: false },
-  { id: "communities", label: "Communities reached", value: 140, verified: false },
+  { id: "girls", label: "Girls supported with menstrual dignity kits", value: 300, verified: true },
+  { id: "towels", label: "Sanitary towels distributed", value: 500, verified: true },
+  { id: "students", label: "Students sponsored", value: 10, verified: true },
+  { id: "teams", label: "Youth sports teams kitted out", value: 7, verified: true },
 ];
 
+/** The foundation's five development priorities. */
 export const causes: Cause[] = [
   {
-    slug: "education",
-    title: "Education",
-    summary: "Classrooms, learning materials and school fees that keep children in school.",
+    slug: "education-and-scholarships",
+    title: "Education & scholarships",
+    summary: "Sponsorships that reduce the barriers keeping learners from continuing their education.",
     description:
-      "We support schools and learners with classroom improvements, books and learning materials, and bursaries that keep children — especially girls — in school through to completion.",
+      "Education creates opportunities for individuals and communities. Our sponsorship initiatives support access to learning — covering tuition, school supplies, uniforms and examination fees — so that learners can stay in school.",
     image: images.causeEducation,
     tone: "gold",
     active: true,
   },
   {
-    slug: "healthcare",
-    title: "Healthcare",
-    summary: "Community health outreach, maternal care and access to essential medicines.",
+    slug: "orphan-and-family-support",
+    title: "Orphan & family support",
+    summary: "Protecting the welfare, dignity and resilience of orphans and vulnerable families.",
     description:
-      "We fund community health outreach, maternal and child health support, and access to essential medicines in partnership with local health workers.",
-    image: images.causeHealthcare,
+      "Vulnerable children and families can face barriers to education, essential resources and social opportunities. We focus on their welfare, dignity and resilience — including helping orphans and vulnerable learners return to school smoothly.",
+    image: images.causeFamily,
     tone: "red",
     active: true,
   },
   {
-    slug: "food-assistance",
-    title: "Food assistance",
-    summary: "Emergency food support and seeds that help families feed themselves again.",
+    slug: "poverty-alleviation",
+    title: "Poverty alleviation",
+    summary: "Strengthening livelihoods, self-reliance and economic resilience.",
     description:
-      "We provide food support when families need it most, and invest in seeds, tools and training so households can rebuild their own food security.",
+      "Economic vulnerability can limit access to education, healthcare and essential household needs. We work to strengthen livelihoods, self-reliance and economic resilience for vulnerable households.",
     image: images.causeFood,
     tone: "green",
     active: true,
   },
   {
-    slug: "clean-water",
-    title: "Clean water",
-    summary: "Boreholes, water points and hygiene education close to home.",
+    slug: "women-and-youth-empowerment",
+    title: "Women & youth empowerment",
+    summary: "Menstrual dignity, sport and skills that let women and young people take part fully.",
     description:
-      "We help communities develop and maintain safe water points, paired with sanitation and hygiene education so the benefits last.",
-    image: images.causeWater,
-    tone: "green",
-    active: true,
-  },
-  {
-    slug: "emergency-relief",
-    title: "Emergency relief",
-    summary: "Rapid response when drought, flood or displacement strikes.",
-    description:
-      "When disaster strikes, we move quickly with partners on the ground to provide essentials — food, water, shelter items and medical support.",
-    image: images.causeEmergency,
-    tone: "red",
-    active: true,
-  },
-  {
-    slug: "family-support",
-    title: "Orphan & family support",
-    summary: "Keeping vulnerable children safe, cared for and within loving families.",
-    description:
-      "We support vulnerable children and the families and guardians caring for them, with a focus on keeping children in safe, family-based care.",
-    image: images.causeFamily,
+      "We create opportunities for women and young people to develop their capabilities and participate fully in community life — from sanitary towel support that reduces practical barriers for girls and young women, to sports kits for youth teams, mentorship and skills development.",
+    image: images.heroSmile,
     tone: "gold",
     active: true,
   },
   {
     slug: "community-development",
     title: "Community development",
-    summary: "Livelihoods, skills and local leadership that outlast any single project.",
+    summary: "Locally relevant initiatives and partnerships that respond to identified needs.",
     description:
-      "We invest in livelihoods, skills training and community-led groups so that progress continues long after a project ends.",
+      "We encourage locally relevant initiatives and partnerships that respond to needs identified by communities themselves, prioritising inclusive participation and sustainable outcomes.",
     image: images.causeCommunity,
-    tone: "gold",
+    tone: "green",
     active: true,
   },
 ];
 
+/** Upcoming initiatives, as announced on the Our Programs page. */
 export const campaigns: Campaign[] = [
   {
-    slug: "back-to-school",
-    title: "Back to school, for every child",
-    causeSlug: "education",
-    summary: "Uniforms, books and fees so children can return to class this term.",
-    image: images.storyBooks,
-    goal: 2500000,
-    raised: 1640000,
-    currency: "KES",
+    slug: "recognising-talents",
+    title: "Recognising Talents",
+    causeSlug: "community-development",
+    summary: "A community event in Naivasha celebrating and encouraging local talent.",
+    image: images.ctaChildren,
+    when: "December 2026",
     featured: true,
-    verified: false,
+    verified: true,
   },
   {
-    slug: "water-closer-to-home",
-    title: "Water, closer to home",
-    causeSlug: "clean-water",
-    summary: "A protected water point and hygiene training for a rural community.",
-    image: images.causeWater,
-    goal: 4000000,
-    raised: 1720000,
-    currency: "KES",
+    slug: "back-to-school-support-drive",
+    title: "Back-to-school support drive",
+    causeSlug: "orphan-and-family-support",
+    summary: "Helping orphans and other vulnerable learners return to school smoothly in the new year.",
+    image: images.storyDoorway,
+    when: "January 2027",
     featured: true,
-    verified: false,
+    verified: true,
   },
   {
-    slug: "seeds-of-recovery",
-    title: "Seeds of recovery",
-    causeSlug: "food-assistance",
-    summary: "Drought-tolerant seed and training for farming families.",
+    slug: "dry-meal-feeding-programme",
+    title: "Dry meal feeding programme",
+    causeSlug: "poverty-alleviation",
+    summary: "Dry food support for vulnerable households, subject to the availability of funds.",
     image: images.storyFarming,
-    goal: 1800000,
-    raised: 1460000,
-    currency: "KES",
+    when: "February 2027",
     featured: true,
-    verified: false,
-  },
-  {
-    slug: "healthy-mothers",
-    title: "Healthy mothers, healthy starts",
-    causeSlug: "healthcare",
-    summary: "Community health outreach for expectant mothers and newborns.",
-    image: images.causeHealthcare,
-    goal: 3200000,
-    raised: 880000,
-    currency: "KES",
-    featured: true,
-    verified: false,
+    verified: true,
   },
 ];
 
+/** Reported activities, from the Activities & Impact page. */
 export const stories: Story[] = [
   {
-    slug: "what-a-water-point-changes",
-    title: "What a water point changes — beyond the water",
+    slug: "sanitary-towel-support-initiative",
+    title: "500 sanitary towels for 300 girls in Ndabibi",
     excerpt:
-      "Time saved on long walks becomes time in class, time at work, time together. A look at the ripple effects of safe water close to home.",
-    category: "Clean water",
-    image: images.heroWaterWalk,
-    readingMinutes: 6,
-    verified: false,
-  },
-  {
-    slug: "keeping-girls-in-school",
-    title: "Keeping girls in school through to the final exam",
-    excerpt: "Why bursaries work best when paired with mentoring and family support.",
-    category: "Education",
+      "At Ndabibi Central Primary School in Maiella Ward, Naivasha, we distributed 500 sanitary towels and 800 inner garments with the Sule Initiative — helping girls manage menstruation with dignity and stay in class.",
+    category: "Menstrual dignity",
     image: images.storyBooks,
-    readingMinutes: 5,
-    verified: false,
+    date: "9 March 2026",
+    readingMinutes: 2,
+    verified: true,
   },
   {
-    slug: "family-based-care",
-    title: "Why family-based care comes first",
-    excerpt: "Supporting guardians so children can grow up safe at home.",
-    category: "Family support",
-    image: images.storyDoorway,
-    readingMinutes: 4,
-    verified: false,
-  },
-  {
-    slug: "joy-is-data-too",
-    title: "Joy is data too: measuring what matters",
-    excerpt: "How we combine numbers and community voices to report honestly.",
-    category: "Transparency",
+    slug: "youth-sports-empowerment",
+    title: "120 jerseys for seven youth teams",
+    excerpt:
+      "Six football teams and one basketball team received full kits — tops, shorts and socks — opening the door to talent pathways such as those run by the Football Kenya Federation.",
+    category: "Youth empowerment",
     image: images.storyBoy,
-    readingMinutes: 4,
-    verified: false,
+    readingMinutes: 2,
+    verified: true,
+  },
+  {
+    slug: "educational-sponsorship-initiative",
+    title: "Ten learners sponsored back to school",
+    excerpt:
+      "Tuition, supplies, uniforms and exam fees for learners at Milimani High School, Lakeview Primary, Naivasha Day High School and others.",
+    category: "Education",
+    image: images.stepVerify,
+    date: "15 January 2026",
+    readingMinutes: 2,
+    verified: true,
   },
 ];
 
 export const donationProcess: ProcessStep[] = [
   {
     id: "donate",
-    title: "Donate",
+    title: "Reach out",
     description:
-      "Give once or monthly by M-PESA, card or international transfer. You choose a campaign, a cause, or where need is greatest.",
+      "Contact the foundation to learn about current needs and approved support arrangements — as an individual, institution or organisation.",
     image: images.stepDonate,
   },
   {
     id: "allocate",
-    title: "Allocate",
+    title: "Agree",
     description:
-      "Your gift is assigned to the programme you chose and recorded against its budget, so it can be traced from day one.",
+      "Together we agree where your support goes: a learner’s sponsorship, a family support drive, or a community initiative.",
     image: images.stepAllocate,
   },
   {
     id: "implement",
-    title: "Implement",
+    title: "Deliver",
     description:
-      "Local partners and community committees deliver the work — building, teaching, treating and planting where it is needed.",
+      "We deliver alongside schools, community partners and local leaders, prioritising real community needs and responsible use of resources.",
     image: images.stepImplement,
   },
   {
     id: "verify",
-    title: "Verify",
+    title: "Document",
     description:
-      "We check progress on the ground with photos, site visits and community feedback before marking milestones complete.",
+      "Every activity is documented responsibly — where, when, what was provided and how many people were supported — while protecting beneficiaries’ privacy.",
     image: images.stepVerify,
   },
   {
     id: "report",
     title: "Report",
     description:
-      "You receive updates on the outcomes you funded, and our financial reports are published openly for everyone.",
+      "We publish verifiable updates on our programmes, the resources used and the outcomes achieved.",
     image: images.stepReport,
   },
 ];
 
 export const volunteer = {
-  eyebrow: "Volunteer with us",
+  eyebrow: "Get involved",
   title: ["Give your time.", "Share your skills."],
-  body: "Whether you teach, heal, build, organise or create, there is a place for you — in the field across Kenya or remotely from anywhere in the world.",
-  /** TODO: confirm the volunteer roles the foundation actually offers. */
-  roles: ["Field programmes", "Teaching & mentoring", "Health outreach", "Events & fundraising", "Digital & remote", "Professional skills"],
+  body: "We welcome individuals who want to contribute their time, knowledge or skills — and educational institutions, community organisations and businesses interested in partnering with us.",
+  /** Partnership areas listed on the Get Involved page. */
+  roles: [
+    "Educational sponsorships",
+    "Menstrual hygiene & dignity",
+    "Women & youth development",
+    "Vulnerable family support",
+    "Community-based projects",
+  ],
   image: images.volunteers,
 };
 
 export const transparency = {
   eyebrow: "Transparency",
-  title: "Accountable for every gift.",
-  body: "Trust is earned in the open. We publish how funds are allocated, how projects are governed and what they achieved — including what didn't go to plan.",
-  allocation: [
-    { label: "Programmes", percent: 82, tone: "green" },
-    { label: "Fundraising", percent: 10, tone: "gold" },
-    { label: "Administration", percent: 8, tone: "neutral" },
-  ] satisfies AllocationItem[],
+  title: "Accountable in everything we do.",
+  body: "We recognise the importance of transparency, ethical conduct and responsible stewardship of resources, and we are open to enquiry and supervision by the public as allowed by Kenyan law.",
+  /** No published split yet — the allocation chart is hidden while empty. */
+  allocation: [] as AllocationItem[],
   allocationVerified: false,
   commitments: [
-    { title: "Published financial reports", body: "Annual statements and spending summaries, open to all." },
-    { title: "Project-level tracking", body: "Budgets and milestones for each campaign you can follow." },
-    { title: "Clear governance", body: "Who leads us, who oversees us, and how decisions are made." },
-    { title: "Honest outcomes", body: "Verified results, community feedback and lessons learned." },
+    {
+      title: "Registered in Kenya",
+      body: "A Company Limited by Guarantee, registration no. CLG-ABF93X, incorporated 30 December 2024.",
+    },
+    {
+      title: "No private benefit",
+      body: "No benefits, shares or profits go to members. Resources serve the foundation’s objectives.",
+    },
+    {
+      title: "Public audit framework",
+      body: "We operate within the public audit framework required of charity organisations in Kenya.",
+    },
+    {
+      title: "Respect for beneficiaries",
+      body: "We do not publish personal beneficiary information without a lawful basis and the necessary permissions.",
+    },
   ],
   reports: [
-    { title: "Annual report", period: "Latest year", status: "coming-soon" },
-    { title: "Audited financial statements", period: "Latest year", status: "coming-soon" },
-    { title: "Programme updates", period: "Quarterly", status: "coming-soon" },
+    { title: "Activity reports", period: "2026", status: "coming-soon" },
+    { title: "Financial statements", period: "Latest year", status: "coming-soon" },
   ] as ReportItem[],
 };
 

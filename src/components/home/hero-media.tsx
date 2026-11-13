@@ -171,7 +171,7 @@ export function HeroMedia({ slides }: { slides: readonly Slide[] }) {
             transition={{ duration: 1.1, ease: wipe }}
           >
             {mounted && (
-              <span className="absolute inset-y-[22%] right-[-30%] left-[28%] block overflow-hidden shadow-lift transition-transform duration-700 ease-out-expo group-hover:-translate-x-4">
+              <span className="absolute inset-y-[22%] right-[-30%] left-[28%] block isolate overflow-hidden rounded-photo-sm shadow-lift transition-transform duration-700 ease-out-expo group-hover:-translate-x-4">
                 <Image src={slides[next].image.src} alt="" fill sizes="320px" className="object-cover" />
               </span>
             )}

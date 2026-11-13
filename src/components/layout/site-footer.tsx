@@ -19,6 +19,9 @@ const socialLabels: Record<keyof typeof site.social, string> = {
 };
 
 export function SiteFooter() {
+  // Break the tagline after its first sentence or clause, keeping the punctuation.
+  const [taglineFirst, ...taglineTail] = site.tagline.split(/(?<=[.,])\s+/);
+  const taglineRest = taglineTail.join(" ");
   const socials = (Object.keys(site.social) as (keyof typeof site.social)[]).filter((k) => site.social[k]);
 
   return (
@@ -29,8 +32,9 @@ export function SiteFooter() {
         <div className="grid gap-14 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <p className="font-display text-display-md text-ivory-50">
-              {site.tagline.split(",")[0]},<br />
-              <span className="pr-[0.08em] italic text-gold-metal">{site.tagline.split(",")[1]?.trim()}</span>
+              {taglineFirst}
+              <br />
+              <span className="pr-[0.08em] italic text-gold-metal">{taglineRest}</span>
             </p>
             <div className="mt-10 max-w-md">
               <p className="mb-2 text-sm text-ivory-200/90">Field updates and impact reports — a few times a year, never spam.</p>
@@ -92,7 +96,7 @@ export function SiteFooter() {
           </div>
           <p className="lg:text-center">
             © <CopyrightYear /> {site.name}. All rights reserved.
-            {site.registration && <> Registered NGO {site.registration}.</>}
+            {site.registration && <> Foundation Registration No. {site.registration}.</>}
           </p>
           <a href="#top" className="eyebrow inline-flex shrink-0 items-center gap-2 whitespace-nowrap text-ivory-100 hover:text-gold-400">
             Back to top <ArrowUp aria-hidden="true" className="size-3.5" />

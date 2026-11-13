@@ -10,17 +10,17 @@ export function CausesSection() {
       <div className="container-site">
         <div className="mb-14 flex flex-col gap-8 lg:mb-20 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <Eyebrow tone="green">Our causes</Eyebrow>
+            <Eyebrow tone="green">Our programmes</Eyebrow>
             <h2 id="causes-title" data-reveal="lines" className="mt-6 font-display text-display-md">
-              <SplitLines lines={["Where your support", "goes to work."]} italicLast accent="green" />
+              <SplitLines lines={["Five priorities.", "One community."]} italicLast accent="green" />
             </h2>
           </div>
           <div data-reveal className="max-w-sm">
             <p className="text-ink-700">
-              {active.length} focus areas, one approach: listen first, fund what communities prioritise, and stay until it lasts.
+              {active.length} development priorities, one approach: community needs first, responsible use of resources, inclusive participation and sustainable outcomes.
             </p>
             <ButtonLink href="/causes" variant="ghost-dark" size="sm" className="mt-6">
-              All causes
+              All programmes
             </ButtonLink>
           </div>
         </div>

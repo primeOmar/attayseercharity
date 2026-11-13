@@ -3,8 +3,8 @@ import type { CurrencyCode, NavItem } from "@/types/content";
 /**
  * Global site configuration.
  *
- * ⚠️ PLACEHOLDERS — replace every value marked TODO with the foundation's
- * verified details before launch. Nothing here should be invented.
+ * Source: the foundation's existing site, www.attayseer.org (Nov 2026).
+ * Nothing here should be invented — update from verified records only.
  */
 export const site = {
   /** Official name, as shown on the approved logo. */
@@ -16,18 +16,17 @@ export const site = {
     /** Full lockup on white — use only on light surfaces. */
     full: { src: "/brand/logo-full.png", width: 1254, height: 1254 },
   },
-  tagline: "Hope, built together.",
+  tagline: "Creating Opportunities. Transforming Communities.",
   description:
-    "A charity foundation working alongside communities in Kenya and East Africa on education, healthcare, food security, clean water and emergency relief.",
-  /** TODO: production domain. Used for canonical URLs, sitemap and OG. */
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+    "A registered nonprofit in Nakuru, Kenya, supporting education, vulnerable families, livelihoods, women, youth and community development.",
+  /** Used for canonical URLs, sitemap and OG. Override per environment if needed. */
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.attayseer.org",
   locale: "en_KE",
-  region: "Kenya & East Africa",
+  region: "Nakuru, Kenya",
   contact: {
-    /** TODO: verified contact details. example.org is a reserved placeholder domain. */
-    email: "hello@example.org",
-    phone: "+254 700 000 000",
-    address: "Nairobi, Kenya",
+    email: "attayserfoundation@gmail.com",
+    phone: "+254 726 414 925",
+    address: "Nashat Muslim Center, Oginga Odinga Street, Nakuru, Kenya",
   },
   /** TODO: real profile URLs. Empty strings are hidden. */
   social: {
@@ -37,9 +36,23 @@ export const site = {
     linkedin: "",
     youtube: "",
   },
-  /** TODO: NGO registration number once confirmed — rendered only when set. */
-  registration: "",
-  isPlaceholder: true,
+  /** Registrar of Companies, Kenya — Company Limited by Guarantee. */
+  registration: "CLG-ABF93X",
+  legal: {
+    structure: "Company Limited by Guarantee",
+    authority: "Registrar of Companies, Kenya",
+    incorporated: "30 December 2024",
+  },
+  /**
+   * Board of Directors, as confirmed by the foundation (Nov 2026). The live
+   * Governance page spells two names differently — these spellings are correct.
+   */
+  leadership: [
+    { name: "Dr. Suleiman Muhammed, PhD", role: "Executive Director" },
+    { name: "Mohammed Hussein Opondoh", role: "Director" },
+    { name: "Seth Onditi Opondoh", role: "Member" },
+  ],
+  isPlaceholder: false,
 } as const;
 
 export const donation = {
@@ -56,9 +69,9 @@ export const donation = {
 
 export const mainNav: NavItem[] = [
   { label: "About", href: "/about", description: "Our story, mission and people" },
-  { label: "Causes", href: "/causes", description: "Where we focus" },
-  { label: "Campaigns", href: "/campaigns", description: "Active appeals" },
-  { label: "Impact", href: "/impact", description: "Outcomes and evidence" },
+  { label: "Programmes", href: "/causes", description: "Our five development priorities" },
+  { label: "Initiatives", href: "/campaigns", description: "What’s coming up" },
+  { label: "Impact", href: "/impact", description: "Activities and outcomes" },
   { label: "Stories", href: "/news", description: "News from the field" },
   { label: "Transparency", href: "/transparency", description: "Reports and governance" },
 ];
@@ -74,8 +87,8 @@ export const footerNav: { title: string; items: NavItem[] }[] = [
     title: "Explore",
     items: [
       { label: "About us", href: "/about" },
-      { label: "Our causes", href: "/causes" },
-      { label: "Campaigns", href: "/campaigns" },
+      { label: "Our programmes", href: "/causes" },
+      { label: "Initiatives", href: "/campaigns" },
       { label: "Our impact", href: "/impact" },
     ],
   },
