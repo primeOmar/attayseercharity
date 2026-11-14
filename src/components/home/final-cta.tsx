@@ -32,7 +32,7 @@ export function FinalCta() {
         <p data-reveal className="mt-6 max-w-md text-ink-700">
           {finalCta.body}
         </p>
-        <div data-reveal className="mt-12 flex w-full justify-center">
+        <div data-reveal className="mt-12 flex w-full min-w-0 justify-center">
           <QuickDonate />
         </div>
       </div>

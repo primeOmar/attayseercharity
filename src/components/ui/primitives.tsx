@@ -19,18 +19,19 @@ export function Eyebrow({
     green: "text-green-700",
   } as const;
   // Oversized editorial eyebrow: a short lead rule, the label, then a hairline
-  // that runs on toward the content.
+  // that runs on toward the content. On narrow screens the label wraps and the
+  // hairline collapses to nothing, so a long eyebrow can never widen the page.
   return (
     <p
       className={cn(
-        "eyebrow flex items-center gap-4 text-[0.8rem] tracking-[0.26em] sm:text-[0.9rem]",
+        "eyebrow flex items-center gap-4 text-[0.8rem] leading-relaxed tracking-[0.2em] sm:text-[0.9rem] sm:tracking-[0.26em]",
         tones[tone],
         className,
       )}
     >
       <span aria-hidden="true" className="h-px w-6 shrink-0 bg-current" />
-      <span className="shrink-0">{children}</span>
-      <span aria-hidden="true" className="h-px max-w-48 min-w-8 flex-1 bg-current opacity-30" />
+      <span className="min-w-0 [overflow-wrap:anywhere]">{children}</span>
+      <span aria-hidden="true" className="h-px max-w-48 min-w-0 flex-1 bg-current opacity-30" />
     </p>
   );
 }

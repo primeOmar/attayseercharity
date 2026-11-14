@@ -14,8 +14,9 @@ import { cn } from "@/lib/utils";
  */
 export const buttonVariants = cva(
   [
-    "group/btn relative isolate inline-flex items-center justify-center gap-3 overflow-hidden",
-    "rounded-pill font-sans text-sm font-medium tracking-wide whitespace-nowrap",
+    "group/btn relative isolate inline-flex items-center justify-center gap-3 overflow-hidden [&_svg]:shrink-0",
+    // Single line normally; wraps (never overflows) on tiny screens / large system fonts.
+    "max-w-full rounded-pill text-center font-sans text-sm leading-tight font-medium tracking-wide [text-wrap:balance]",
     "transition-colors duration-500 ease-out-expo",
     "before:absolute before:inset-0 before:-z-10 before:translate-y-full before:rounded-[inherit]",
     "before:transition-transform before:duration-500 before:ease-out-expo hover:before:translate-y-0",
@@ -30,9 +31,9 @@ export const buttonVariants = cva(
         "solid-dark": "bg-ink-950 text-ivory-50 before:bg-green-700",
       },
       size: {
-        md: "h-12 px-6",
-        lg: "h-14 px-8 text-[0.95rem]",
-        sm: "h-10 px-5 text-[0.8rem]",
+        md: "min-h-12 px-6 py-2",
+        lg: "min-h-14 px-8 py-2.5 text-[0.95rem]",
+        sm: "min-h-10 px-5 py-1.5 text-[0.8rem]",
       },
     },
     defaultVariants: { variant: "primary", size: "md" },

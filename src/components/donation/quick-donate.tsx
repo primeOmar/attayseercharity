@@ -26,14 +26,15 @@ export function QuickDonate() {
     <form
       action="/donate"
       method="get"
-      className="w-full max-w-xl rounded-lg border border-ink-950/10 bg-white p-5 text-left shadow-[0_40px_80px_-40px_rgb(11_10_8/0.45)] sm:p-8"
+      className="w-full max-w-xl min-w-0 rounded-lg border border-ink-950/10 bg-white p-5 text-left shadow-[0_40px_80px_-40px_rgb(11_10_8/0.45)] sm:p-8"
       onSubmit={(e) => {
         if (!valid) e.preventDefault();
       }}
     >
       <div className="flex flex-wrap items-center justify-between gap-4">
         {/* Frequency */}
-        <fieldset>
+        {/* min-w-0: fieldsets default to min-inline-size: min-content and won’t shrink. */}
+        <fieldset className="min-w-0">
           <legend className="sr-only">Donation frequency</legend>
           <div className="flex rounded-pill border border-ink-950/15 p-1">
             {(["one-time", "monthly"] as const).map((f) => (
@@ -85,7 +86,7 @@ export function QuickDonate() {
       </div>
 
       {/* Amounts */}
-      <fieldset className="mt-6">
+      <fieldset className="mt-6 min-w-0">
         <legend className="mb-3 text-sm text-ink-700">Choose an amount</legend>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
           {presets.map((p) => {
@@ -94,7 +95,7 @@ export function QuickDonate() {
               <label
                 key={p}
                 className={cn(
-                  "flex h-14 cursor-pointer items-center justify-center rounded-md border text-base font-medium transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-green-700",
+                  "flex h-14 min-w-0 cursor-pointer items-center justify-center rounded-md border px-2 text-center text-[0.95rem] sm:text-base font-medium transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-green-700",
                   checked
                     ? "border-gold-500 bg-gold-metal text-ink-950"
                     : "border-ink-950/15 text-ink-950 hover:border-gold-600",
@@ -117,7 +118,7 @@ export function QuickDonate() {
           })}
         </div>
 
-        <label htmlFor={`${uid}-custom`} className="mt-3 flex h-14 items-center gap-3 rounded-md border border-ink-950/15 px-4 focus-within:border-green-700">
+        <label htmlFor={`${uid}-custom`} className="mt-3 flex h-14 min-w-0 items-center gap-3 rounded-md border border-ink-950/15 px-4 focus-within:border-green-700">
           <span className="text-sm text-ink-700">Other</span>
           <span className="text-sm text-ink-500">{currency}</span>
           <input
@@ -130,7 +131,9 @@ export function QuickDonate() {
             placeholder="Enter amount"
             value={custom}
             onChange={(e) => setCustom(e.target.value)}
-            className="min-w-0 flex-1 bg-transparent text-base text-ink-950 placeholder:text-ink-500 focus:outline-none"
+            // w-0 + flex-1: number inputs have a ~20ch intrinsic width that would
+            // otherwise push the card wider than a phone screen.
+            className="w-0 min-w-0 flex-1 bg-transparent text-base text-ink-950 placeholder:text-ink-500 focus:outline-none"
           />
         </label>
       </fieldset>
@@ -138,7 +141,7 @@ export function QuickDonate() {
       <button
         type="submit"
         disabled={!valid}
-        className="group mt-6 flex h-14 w-full items-center justify-center gap-3 rounded-pill bg-gold-metal text-[0.95rem] font-medium text-ink-950 shadow-[0_14px_40px_-14px_rgb(241_177_15/0.6)] transition-[filter,transform] hover:brightness-110 active:scale-[0.99] disabled:opacity-50"
+        className="group mt-6 flex min-h-14 w-full items-center justify-center gap-3 rounded-pill px-5 py-3 text-center bg-gold-metal text-[0.95rem] font-medium text-ink-950 shadow-[0_14px_40px_-14px_rgb(241_177_15/0.6)] transition-[filter,transform] hover:brightness-110 active:scale-[0.99] disabled:opacity-50"
       >
         {valid ? (
           <>
