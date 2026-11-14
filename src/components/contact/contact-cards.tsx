@@ -29,7 +29,7 @@ export function ContactCards({ subject, className }: { subject?: string; classNa
               <Icon aria-hidden="true" className="size-5" />
             </span>
             <span className="eyebrow mt-6 text-ink-500">{label}</span>
-            <span className="mt-2 text-lg leading-snug break-words text-ink-950 group-hover:text-green-700">{value}</span>
+            <span className="mt-2 text-lg leading-snug min-w-0 [overflow-wrap:anywhere] text-ink-950 group-hover:text-green-700">{value}</span>
           </a>
         </li>
       ))}

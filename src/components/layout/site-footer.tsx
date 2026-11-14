@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUp } from "lucide-react";
+import { ArrowUp, Mail, MapPin, Phone } from "lucide-react";
 import { footerNav, site } from "@/content/site";
 import { Logo } from "@/components/ui/logo";
 import { NewsletterForm } from "@/components/forms/newsletter-form";
@@ -60,14 +60,27 @@ export function SiteFooter() {
 
             <div className="col-span-2 sm:col-span-3">
               <h2 className="eyebrow mb-5 text-ivory-200/75">Contact</h2>
-              <address className="grid gap-2 text-[0.95rem] text-ivory-100/85 not-italic sm:grid-cols-3">
-                <a href={`mailto:${site.contact.email}`} className="hover:text-gold-400">
-                  {site.contact.email}
+              {/* One item per line: a long email can't be squeezed into an equal-width
+                  column without overflowing into its neighbour. */}
+              <address className="flex flex-col gap-3.5 text-[0.95rem] text-ivory-100/85 not-italic">
+                <a
+                  href={`mailto:${site.contact.email}`}
+                  className="flex min-w-0 items-start gap-3 transition-colors hover:text-gold-400"
+                >
+                  <Mail aria-hidden="true" className="mt-[0.2em] size-4 shrink-0 text-gold-400" />
+                  <span className="min-w-0 [overflow-wrap:anywhere]">{site.contact.email}</span>
                 </a>
-                <a href={`tel:${site.contact.phone.replace(/\s/g, "")}`} className="hover:text-gold-400">
+                <a
+                  href={`tel:${site.contact.phone.replace(/\s/g, "")}`}
+                  className="flex min-w-0 items-start gap-3 whitespace-nowrap transition-colors hover:text-gold-400"
+                >
+                  <Phone aria-hidden="true" className="mt-[0.2em] size-4 shrink-0 text-gold-400" />
                   {site.contact.phone}
                 </a>
-                <span>{site.contact.address}</span>
+                <span className="flex min-w-0 items-start gap-3">
+                  <MapPin aria-hidden="true" className="mt-[0.2em] size-4 shrink-0 text-gold-400" />
+                  <span className="min-w-0">{site.contact.address}</span>
+                </span>
               </address>
               {site.isPlaceholder && (
                 <p className="mt-3 text-xs text-ivory-200/75">Contact details are placeholders pending confirmation.</p>

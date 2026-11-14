@@ -251,7 +251,7 @@ function MenuOverlay({ onClose, pathname }: { onClose: () => void; pathname: str
           <div className="space-y-1 text-sm text-ink-300">
             <p className="eyebrow mb-3 text-ink-400">Contact</p>
             <p>
-              <a href={`mailto:${site.contact.email}`} className="hover:text-gold-400">
+              <a href={`mailto:${site.contact.email}`} className="[overflow-wrap:anywhere] hover:text-gold-400">
                 {site.contact.email}
               </a>
             </p>
