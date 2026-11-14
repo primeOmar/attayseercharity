@@ -15,6 +15,8 @@ import { FinalCta } from "@/components/home/final-cta";
 import { SnapSection } from "@/components/layout/snap-section";
 import { SectionTransitions } from "@/components/layout/section-transitions";
 import { SectionNav } from "@/components/layout/section-nav";
+import { PhotoStrip } from "@/components/home/photo-strip";
+import { collage } from "@/content/images";
 
 export const metadata: Metadata = {
   ...pageMetadata({
@@ -37,11 +39,17 @@ export default function HomePage() {
   return (
     <>
       <SnapSection label="Welcome"><Hero /></SnapSection>
-      <SnapSection label="Mission"><Mission /></SnapSection>
+      <SnapSection label="Mission">
+        <Mission />
+        <PhotoStrip photos={collage} />
+      </SnapSection>
       <SnapSection label="Impact"><ImpactStats /></SnapSection>
       <SnapSection label="Initiatives"><FeaturedCampaigns /></SnapSection>
       <SnapSection label="Programmes"><CausesSection /></SnapSection>
-      <SnapSection label="Stories"><ImpactStories /></SnapSection>
+      <SnapSection label="Stories">
+        <ImpactStories />
+        <PhotoStrip photos={[...collage].reverse()} rows={1} className="bg-ivory-50 pt-0" />
+      </SnapSection>
       <SnapSection label="How it works"><DonationProcess steps={donationProcess} /></SnapSection>
       <SnapSection label="Volunteer"><VolunteerSection /></SnapSection>
       <SnapSection label="Transparency"><TransparencySection /></SnapSection>

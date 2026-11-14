@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { Photo } from "@/components/ui/photo";
 import Link from "next/link";
 import { CalendarDays } from "lucide-react";
 import type { Campaign } from "@/types/content";
@@ -58,8 +58,8 @@ export function CampaignCard({ campaign, className }: { campaign: Campaign; clas
       )}
     >
       <div className="relative aspect-[4/3] overflow-hidden">
-        <Image
-          src={campaign.image.src}
+        <Photo
+          image={campaign.image}
           alt={campaign.image.alt}
           fill
           sizes="(min-width: 1024px) 33vw, (min-width: 640px) 60vw, 85vw"

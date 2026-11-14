@@ -43,7 +43,14 @@
 
   /* Typography */
   --font-display: var(--font-instrument-serif), "Times New Roman", serif;
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter-tight), ui-sans-serif, system-ui, sans-serif;
+
+  /* Tonal washes — brand tones at 8–12% over ivory, pre-mixed to solid hex
+     (color-mix() isn't available on the older Safari we support). Every text
+     tone used on light surfaces keeps WCAG AA on these. */
+  --color-wash-gold: #faefd7;
+  --color-wash-green: #eaf0e2;
+  --color-wash-red: #f9e7e2;
 
   /* Fluid type scale */
   --text-display-xl: clamp(3.25rem, 1.6rem + 7.4vw, 9.5rem);
@@ -83,7 +90,7 @@
   --animate-fade-up: fade-up 1s var(--ease-out-expo) backwards;
   --animate-hero-zoom: hero-zoom 2.4s var(--ease-out-expo) backwards;
   /* "backwards" (not "both") so scroll-driven inline styles take over after the intro. */
-  --animate-hero-open: hero-open 1.8s var(--ease-in-out-quart) 0.1s backwards;
+  --animate-hero-open: hero-open 1.6s var(--ease-in-out-quart) 0.1s backwards;
   --animate-scroll-cue: scroll-cue 2.2s var(--ease-in-out-quart) infinite;
 
   @keyframes line-up {
@@ -95,7 +102,8 @@
     to { opacity: 1; transform: translateY(0); }
   }
   @keyframes hero-open {
-    from { clip-path: inset(0% 5% 10% 5% round 0 0 2.5rem 2.5rem); }
+    /* A rounded inner card that unveils to full bleed. */
+    from { clip-path: inset(10% 7% 10% 7% round 2.5rem); }
     to { clip-path: inset(0% 0% 0% 0% round 0rem); }
   }
   @keyframes scroll-cue {
@@ -113,6 +121,49 @@
 @keyframes grow {
   from { transform: scaleX(0); }
   to { transform: scaleX(1); }
+}
+
+@keyframes focus-in {
+  from { outline-offset: 8px; box-shadow: 0 0 0 0 transparent; }
+}
+
+/* Footer marquee: the track holds two identical runs and slides by one run. */
+@keyframes marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+@layer components {
+  /* Odometer digit: a 0–9 reel drawn by CSS (no extra DOM text for crawlers or
+     screen readers), positioned by --d. Server-rendered at the final value. */
+  .digit-reel {
+    display: inline-block;
+    height: 1em;
+    overflow: hidden;
+    line-height: 1;
+    vertical-align: top;
+  }
+  .digit-reel > span {
+    display: block;
+    transform: translateY(calc(var(--d, 0) * -1em));
+  }
+  .digit-reel > span::before {
+    content: "0\A 1\A 2\A 3\A 4\A 5\A 6\A 7\A 8\A 9";
+    white-space: pre;
+  }
+  .digit-reel[data-spin] > span {
+    transition: transform 1.8s var(--ease-out-expo);
+  }
+
+  /* Marquee */
+  .marquee-track {
+    animation: marquee var(--marquee-duration, 40s) linear infinite;
+  }
+  .marquee:hover .marquee-track,
+  .marquee:focus-within .marquee-track {
+    animation-play-state: paused;
+  }
+
 }
 
 /* ==========================================================================
@@ -138,15 +189,33 @@
     color: var(--color-ink-950);
   }
 
-  /* Green focus ring on light surfaces; gold on dark ones (both ≥ 3:1). */
-  :focus-visible {
-    outline: 2px solid var(--color-green-700);
-    outline-offset: 3px;
-    border-radius: 2px;
+  /* Designed focus: a brand ring that settles in from a wider offset, with a
+     soft halo. Green on light surfaces, gold on dark (both ≥ 3:1 non-text). */
+  :root {
+    --focus-ring: var(--color-green-700);
+    --focus-halo: rgb(12 88 20 / 0.16);
+  }
+  [data-surface="dark"] {
+    --focus-ring: var(--color-gold-400);
+    --focus-halo: rgb(245 192 58 / 0.22);
   }
 
-  [data-surface="dark"] :focus-visible {
-    outline-color: var(--color-gold-400);
+  :focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 3px;
+    box-shadow: 0 0 0 7px var(--focus-halo);
+    border-radius: 4px;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    :focus-visible {
+      animation: focus-in 0.35s var(--ease-out-expo);
+    }
+  }
+  /* Form fields draw their own focus treatment on the wrapper. */
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    box-shadow: none;
   }
 
   /* Lenis */
@@ -297,5 +366,14 @@
     opacity: 1 !important;
     transform: none !important;
     clip-path: none !important;
+  }
+  /* Marquee becomes a static, wrapped list; its duplicate run is hidden. */
+  .marquee-track {
+    animation: none !important;
+    flex-wrap: wrap;
+    width: auto !important;
+  }
+  .marquee-track > [aria-hidden="true"] {
+    display: none !important;
   }
 }

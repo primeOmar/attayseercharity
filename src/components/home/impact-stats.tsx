@@ -6,7 +6,7 @@ export function ImpactStats() {
   const hasUnverified = impactStats.some((s) => !s.verified);
 
   return (
-    <section id="impact" aria-labelledby="impact-title" className="bg-ivory-200 py-[var(--spacing-section)] text-ink-950">
+    <section id="impact" aria-labelledby="impact-title" className="bg-wash-gold py-[var(--spacing-section)] text-ink-950">
       <div className="container-site grid gap-16 lg:grid-cols-12">
         <div className="lg:col-span-5">
           <Eyebrow tone="red">Our impact</Eyebrow>

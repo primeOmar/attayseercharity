@@ -3,6 +3,11 @@ import { ArrowUp, Mail, MapPin, Phone } from "lucide-react";
 import { footerNav, site } from "@/content/site";
 import { Logo } from "@/components/ui/logo";
 import { NewsletterForm } from "@/components/forms/newsletter-form";
+import { about } from "@/content/pages";
+import { ValuesMarquee } from "./values-marquee";
+
+/** Values + partners, shown in the footer marquee. */
+const marqueeItems = [...about.values, "In partnership with the Sule Initiative"] as const;
 
 /** Cached so the year doesn't break static prerendering under Cache Components. */
 async function CopyrightYear() {
@@ -25,10 +30,11 @@ export function SiteFooter() {
   const socials = (Object.keys(site.social) as (keyof typeof site.social)[]).filter((k) => site.social[k]);
 
   return (
-    <footer data-snap-end data-surface="dark" className="relative bg-green-950 bg-green-deep pt-20 pb-10 text-ivory-100 sm:pt-28">
+    <footer data-snap-end data-surface="dark" className="relative bg-green-950 bg-green-deep pt-1 pb-10 text-ivory-100">
       {/* Red · gold · green band — the open book's page edges from the logo */}
       <span aria-hidden="true" className="absolute inset-x-0 top-0 h-1 bg-brand-stripe" />
-      <div className="container-site">
+      <ValuesMarquee items={marqueeItems} />
+      <div className="container-site mt-16 sm:mt-24">
         <div className="grid gap-14 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <p className="font-display text-display-md text-ivory-50">

@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { Photo } from "@/components/ui/photo";
 import { useRef, useState } from "react";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll, useTransform } from "motion/react";
 import type { ProcessStep } from "@/types/content";
@@ -118,9 +118,9 @@ function DesktopJourney({ steps }: { steps: ProcessStep[] }) {
             <div className="relative mx-auto aspect-[4/5] max-h-[68svh] isolate overflow-hidden rounded-photo bg-ivory-200 shadow-lift">
               <motion.div style={{ scale: zoom }} className="absolute inset-0">
                 {steps.map((s, i) => (
-                  <Image
+                  <Photo
                     key={s.id}
-                    src={s.image.src}
+                    image={s.image}
                     alt={s.image.alt}
                     fill
                     sizes="(min-width: 1024px) 30vw, 0px"
@@ -199,7 +199,7 @@ function MobileSteps({ steps }: { steps: ProcessStep[] }) {
         {steps.map((s, i) => (
           <li key={s.id} data-reveal>
             <div data-reveal="image" className="relative aspect-[16/10] overflow-hidden rounded-photo">
-              <Image src={s.image.src} alt={s.image.alt} fill sizes="100vw" className="object-cover" />
+              <Photo image={s.image} alt={s.image.alt} fill sizes="100vw" className="object-cover" />
             </div>
             <p className="eyebrow mt-6 text-green-700">Step {pad2(i + 1)}</p>
             <h3 className="mt-2 font-display text-4xl">{s.title}</h3>

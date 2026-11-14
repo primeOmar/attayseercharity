@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { Photo } from "@/components/ui/photo";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { routes } from "@/content/routes";
@@ -33,7 +33,7 @@ export default function ProgrammesPage() {
                   i % 2 === 1 && "lg:order-2",
                 )}
               >
-                <Image src={cause.image.src} alt={cause.image.alt} fill sizes="(min-width: 1024px) 45vw, 100vw" className="object-cover" />
+                <Photo image={cause.image} alt={cause.image.alt} fill sizes="(min-width: 1024px) 45vw, 100vw" className="object-cover" />
               </div>
               <div data-reveal className="lg:col-span-6">
                 <span className="eyebrow text-red-600 tabular-nums">Priority {pad2(i + 1)}</span>

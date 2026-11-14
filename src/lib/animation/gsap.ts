@@ -11,6 +11,9 @@ import { useGSAP } from "@gsap/react";
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, useGSAP);
   gsap.defaults({ ease: "expo.out", duration: 1 });
+  // Mobile browsers resize the viewport as the address bar shows/hides; don't
+  // recalculate (and jump) every scrubbed animation when that happens.
+  ScrollTrigger.config({ ignoreMobileResize: true });
 }
 
 /** Media queries shared by every gsap.matchMedia() block. */

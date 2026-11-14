@@ -3,14 +3,22 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
+import { AnimatePresence, motion, useMotionValue, useMotionValueEvent, useScroll, useSpring } from "motion/react";
 import { cn } from "@/lib/utils";
 import { mainNav, secondaryNav, site } from "@/content/site";
+import { routes, type RouteEntry } from "@/content/routes";
+import { images } from "@/content/images";
+import type { ImageAsset } from "@/types/content";
+import { Photo } from "@/components/ui/photo";
 import { Logo } from "@/components/ui/logo";
 import { ButtonLink } from "@/components/ui/button";
 import { setScrollLocked } from "./smooth-scroll";
 
 const ease = [0.16, 1, 0.3, 1] as const;
+
+/** Thumbnail shown beside the cursor when hovering a nav link (the page’s own header image). */
+const routeImages = new Map((Object.values(routes) as RouteEntry[]).map((r) => [r.path, r.image]));
+const previewFor = (href: string): ImageAsset => routeImages.get(href) ?? images.heroSmile;
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -18,6 +26,17 @@ export function SiteHeader() {
   const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
   const { scrollY } = useScroll();
+
+  // Cursor-following nav preview (fine pointers with motion allowed only).
+  const [preview, setPreview] = useState<ImageAsset | null>(null);
+  const canPreview = useRef(false);
+  const px = useMotionValue(0);
+  const py = useMotionValue(0);
+  const sx = useSpring(px, { stiffness: 260, damping: 28, mass: 0.6 });
+  const sy = useSpring(py, { stiffness: 260, damping: 28, mass: 0.6 });
+  useEffect(() => {
+    canPreview.current = window.matchMedia("(pointer: fine) and (prefers-reduced-motion: no-preference)").matches;
+  }, []);
 
   useMotionValueEvent(scrollY, "change", (y) => {
     const prev = scrollY.getPrevious() ?? 0;
@@ -64,16 +83,33 @@ export function SiteHeader() {
             : "border-b border-transparent",
         )}
       >
-        <div className="container-site flex h-16 items-center justify-between gap-3 sm:h-[4.5rem] sm:gap-6 lg:h-20">
+        {/* Shrinks once the page scrolls; the bar also turns frosted (backdrop blur) above. */}
+        <div
+          className={cn(
+            "container-site flex items-center justify-between gap-3 transition-[height] duration-500 ease-out-expo sm:gap-6",
+            scrolled ? "h-14 sm:h-16" : "h-16 sm:h-[4.5rem] lg:h-20",
+          )}
+        >
           {/* The wordmark can't wrap, so it must never be squeezed: below 2xl it
               only shares the row with the Donate + Menu buttons, which always fit. */}
           <Link href="/" aria-label={`${site.name} — home`} className="relative z-10 min-w-0 shrink 2xl:shrink-0">
-            <Logo priority tone={light ? "dark" : "light"} />
+            <Logo
+              priority
+              tone={light ? "dark" : "light"}
+              className={cn("origin-left transition-transform duration-500 ease-out-expo", scrolled && "scale-90")}
+            />
           </Link>
 
           {/* Inline nav needs ~1,400px with the logo and buttons; narrower screens use the Menu. */}
           <nav aria-label="Primary" className="hidden 2xl:block">
-            <ul className="flex items-center gap-7">
+            <ul
+              className="flex items-center gap-7"
+              onPointerMove={(e) => {
+                px.set(e.clientX);
+                py.set(e.clientY);
+              }}
+              onPointerLeave={() => setPreview(null)}
+            >
               {mainNav.map((item) => {
                 const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
                 return (
@@ -81,6 +117,17 @@ export function SiteHeader() {
                     <Link
                       href={item.href}
                       aria-current={active ? "page" : undefined}
+                      onPointerEnter={(e) => {
+                        if (!canPreview.current) return;
+                        // Start the spring at the cursor so the card doesn't fly in from the corner.
+                        if (!preview) {
+                          px.jump(e.clientX);
+                          py.jump(e.clientY);
+                          sx.jump(e.clientX);
+                          sy.jump(e.clientY);
+                        }
+                        setPreview(previewFor(item.href));
+                      }}
                       className={cn(
                         "group relative py-2 text-[0.8rem] font-medium tracking-[0.14em] uppercase transition-colors",
                         light
@@ -108,13 +155,35 @@ export function SiteHeader() {
           </nav>
 
           <div className="relative z-10 flex shrink-0 items-center gap-1.5 sm:gap-3">
-            <ButtonLink href="/donate" size="sm" className="gap-2 px-4 sm:gap-3 sm:px-5 [&>svg]:hidden sm:[&>svg]:block">
+            <ButtonLink href="/donate" size="sm" magnetic className="gap-2 px-4 sm:gap-3 sm:px-5 [&>svg]:hidden sm:[&>svg]:block">
               Donate<span className="hidden sm:inline"> now</span>
             </ButtonLink>
             <MenuButton open={open} light={light} onToggle={() => setOpen((o) => !o)} />
           </div>
         </div>
       </motion.header>
+
+      {/* Nav hover preview — decorative, outside the (transformed) header so fixed positioning is viewport-relative. */}
+      <motion.div
+        aria-hidden="true"
+        style={{ x: sx, y: sy }}
+        className="pointer-events-none fixed top-0 left-0 z-[60] hidden 2xl:block"
+      >
+        <AnimatePresence>
+          {preview && (
+            <motion.div
+              key={preview.src}
+              initial={{ opacity: 0, scale: 0.85, rotate: -4 }}
+              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.35, ease }}
+              className="absolute top-7 left-5 aspect-[4/3] w-56 overflow-hidden rounded-photo-sm bg-ink-900 shadow-lift"
+            >
+              <Photo image={preview} alt="" fill sizes="224px" className="object-cover" />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
 
       <AnimatePresence>{open && <MenuOverlay onClose={close} pathname={pathname} />}</AnimatePresence>
     </>

@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { Photo } from "@/components/ui/photo";
 import Link from "next/link";
 import { ArrowUpRight, CalendarDays, Clock } from "lucide-react";
 import { stories } from "@/content/home";
@@ -31,8 +31,8 @@ export function ImpactStories() {
           {/* Feature story */}
           <article className="group relative lg:col-span-7">
             <div data-reveal="image" className="relative isolate aspect-[4/3] overflow-hidden rounded-photo">
-              <Image
-                src={feature.image.src}
+              <Photo
+                image={feature.image}
                 alt={feature.image.alt}
                 fill
                 sizes="(min-width: 1024px) 55vw, 100vw"
@@ -68,9 +68,9 @@ export function ImpactStories() {
             {rest.map((story, i) => (
               <li key={story.slug} data-reveal data-reveal-delay={i * 90}>
                 <article className="group relative grid grid-cols-[7.5rem_1fr] gap-5 py-6 sm:grid-cols-[10rem_1fr]">
-                  <div className="relative isolate aspect-[4/5] overflow-hidden rounded-photo-sm">
-                    <Image
-                      src={story.image.src}
+                  <div data-reveal="image" className="relative isolate aspect-[4/5] overflow-hidden rounded-photo-sm">
+                    <Photo
+                      image={story.image}
                       alt={story.image.alt}
                       fill
                       sizes="10rem"

@@ -51,22 +51,28 @@ function Arrow() {
 }
 
 type ButtonLinkProps = Omit<ComponentProps<typeof Link>, "className"> &
-  Variants & { className?: string; children: ReactNode; arrow?: boolean };
+  Variants & {
+    className?: string;
+    children: ReactNode;
+    arrow?: boolean;
+    /** Drifts toward the cursor on hover (fine pointers, motion allowed). */
+    magnetic?: boolean;
+  };
 
-export function ButtonLink({ variant, size, className, children, arrow = true, ...props }: ButtonLinkProps) {
+export function ButtonLink({ variant, size, className, children, arrow = true, magnetic, ...props }: ButtonLinkProps) {
   return (
-    <Link className={cn(buttonVariants({ variant, size }), className)} {...props}>
+    <Link className={cn(buttonVariants({ variant, size }), className)} data-magnetic={magnetic || undefined} {...props}>
       <span>{children}</span>
       {arrow && <Arrow />}
     </Link>
   );
 }
 
-type ButtonProps = ComponentProps<"button"> & Variants & { arrow?: boolean };
+type ButtonProps = ComponentProps<"button"> & Variants & { arrow?: boolean; magnetic?: boolean };
 
-export function Button({ variant, size, className, children, arrow = false, type = "button", ...props }: ButtonProps) {
+export function Button({ variant, size, className, children, arrow = false, magnetic, type = "button", ...props }: ButtonProps) {
   return (
-    <button type={type} className={cn(buttonVariants({ variant, size }), className)} {...props}>
+    <button type={type} className={cn(buttonVariants({ variant, size }), className)} data-magnetic={magnetic || undefined} {...props}>
       <span>{children}</span>
       {arrow && <Arrow />}
     </button>

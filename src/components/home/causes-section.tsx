@@ -1,12 +1,12 @@
 import { causes } from "@/content/home";
 import { ButtonLink } from "@/components/ui/button";
 import { Eyebrow, SplitLines } from "@/components/ui/primitives";
-import { CausesIndex } from "./causes-index";
+import { StackedCauses } from "./stacked-causes";
 
 export function CausesSection() {
   const active = causes.filter((c) => c.active);
   return (
-    <section aria-labelledby="causes-title" className="bg-ivory-100 py-[var(--spacing-section)] text-ink-950">
+    <section aria-labelledby="causes-title" className="bg-ivory-50 py-[var(--spacing-section)] text-ink-950">
       <div className="container-site">
         <div className="mb-14 flex flex-col gap-8 lg:mb-20 lg:flex-row lg:items-end lg:justify-between">
           <div>
@@ -24,7 +24,7 @@ export function CausesSection() {
             </ButtonLink>
           </div>
         </div>
-        <CausesIndex causes={active} />
+        <StackedCauses causes={active} />
       </div>
     </section>
   );

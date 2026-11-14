@@ -1,49 +1,84 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { animate, useInView } from "motion/react";
 import { formatNumber } from "@/lib/utils";
 
 /**
- * Server renders the final value (crawlable, correct without JS).
- * On the client, if the number hasn't been seen yet, it resets to 0 and counts
- * up when it scrolls into view. Reduced-motion users just see the value.
+ * Odometer-style counter: each digit is a 0–9 reel (drawn in CSS, see
+ * `.digit-reel` in globals.css) that flips to its value.
+ *
+ * - Server-rendered at the final value, so it is correct without JS.
+ * - Screen readers and crawlers get the plain number; the reels are aria-hidden.
+ * - If the number starts off-screen (and motion is allowed), the reels are
+ *   reset to 0 and spin up — staggered right-to-left — when it scrolls into view.
  */
 export function CountUp({ value, prefix = "", suffix = "" }: { value: number; prefix?: string; suffix?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const armed = useRef(false);
-  const inView = useInView(ref, { once: true, margin: "0px 0px -15% 0px" });
+  const text = formatNumber(value);
 
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const rect = el.getBoundingClientRect();
-    const offscreen = rect.top > window.innerHeight;
-    if (!reduce && offscreen) {
-      el.textContent = `${prefix}0${suffix}`;
-      armed.current = true;
-    }
-  }, [prefix, suffix]);
+    const root = ref.current;
+    if (!root || !("IntersectionObserver" in window)) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (root.getBoundingClientRect().top < window.innerHeight) return; // already visible: leave as is
 
-  useEffect(() => {
-    if (!inView || !armed.current || !ref.current) return;
-    const el = ref.current;
-    const controls = animate(0, value, {
-      duration: 2.2,
-      ease: [0.16, 1, 0.3, 1],
-      onUpdate: (v) => {
-        el.textContent = `${prefix}${formatNumber(Math.round(v))}${suffix}`;
+    const reels = Array.from(root.querySelectorAll<HTMLElement>(".digit-reel"));
+    // Targets come from the value, never from the DOM: the DOM may already hold
+    // the reset zeros (e.g. effects re-run in Strict Mode or after a cleanup).
+    const finals = [...formatNumber(value)].filter((ch) => /\d/.test(ch));
+    const restore = () =>
+      reels.forEach((r, i) => {
+        r.removeAttribute("data-spin");
+        r.firstElementChild?.removeAttribute("style");
+        r.style.setProperty("--d", finals[i] ?? "0");
+      });
+    reels.forEach((r) => r.style.setProperty("--d", "0"));
+    let frame = 0;
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        io.disconnect();
+        // Next frame so the reset position is painted before the transition starts.
+        frame = requestAnimationFrame(() => {
+          reels.forEach((r, i) => {
+            r.setAttribute("data-spin", "");
+            r.firstElementChild?.setAttribute("style", `transition-delay:${(reels.length - 1 - i) * 90}ms`);
+            r.style.setProperty("--d", finals[i]);
+          });
+        });
       },
-    });
-    return () => controls.stop();
-  }, [inView, value, prefix, suffix]);
+      { rootMargin: "0px 0px -15% 0px" },
+    );
+    io.observe(root);
+    // Always leave the real number showing if the effect is torn down mid-way.
+    return () => {
+      io.disconnect();
+      cancelAnimationFrame(frame);
+      restore();
+    };
+  }, [value]);
 
   return (
-    <span ref={ref} className="tabular-nums">
-      {prefix}
-      {formatNumber(value)}
-      {suffix}
+    <span ref={ref} className="inline-flex tabular-nums">
+      <span className="sr-only">
+        {prefix}
+        {text}
+        {suffix}
+      </span>
+      <span aria-hidden="true" className="inline-flex">
+        {prefix}
+        {[...text].map((ch, i) =>
+          /\d/.test(ch) ? (
+            <span key={i} className="digit-reel" style={{ "--d": ch } as React.CSSProperties}>
+              <span />
+            </span>
+          ) : (
+            <span key={i}>{ch}</span>
+          ),
+        )}
+        {suffix}
+      </span>
     </span>
   );
 }

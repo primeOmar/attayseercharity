@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { Photo } from "@/components/ui/photo";
 import type { Activity } from "@/content/pages";
 import { cn } from "@/lib/utils";
 
@@ -17,7 +17,7 @@ export function ActivityReport({ activity, flip = false }: { activity: Activity;
     <article id={activity.slug} aria-labelledby={`${activity.slug}-title`} className="grid scroll-mt-28 gap-10 lg:grid-cols-12 lg:gap-16">
       <div className={cn("lg:col-span-5", flip && "lg:order-2")}>
         <div data-reveal="image" className="relative isolate aspect-[4/5] overflow-hidden rounded-photo lg:sticky lg:top-28">
-          <Image src={activity.image.src} alt={activity.image.alt} fill sizes="(min-width: 1024px) 38vw, 100vw" className="object-cover" />
+          <Photo image={activity.image} alt={activity.image.alt} fill sizes="(min-width: 1024px) 38vw, 100vw" className="object-cover" />
         </div>
       </div>
       <div data-reveal className="lg:col-span-7">

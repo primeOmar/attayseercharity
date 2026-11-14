@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { Photo } from "@/components/ui/photo";
 import Link from "next/link";
 import { useRef, type CSSProperties } from "react";
 import { ArrowUpRight } from "lucide-react";
@@ -147,8 +147,8 @@ export function Mission() {
                 } as CSSProperties
               }
             >
-              <Image
-                src={img.src}
+              <Photo
+                image={img}
                 alt=""
                 width={img.width}
                 height={img.height}

@@ -13,7 +13,7 @@ export function ProgrammeHighlights({ cause, tone = "light" }: { cause: Cause; t
           <li key={h.text} className="flex gap-3">
             <Icon
               aria-hidden="true"
-              className={cn("mt-0.5 size-5 shrink-0", h.kind === "reported" ? "text-green-600" : "text-gold-600")}
+              className={cn("mt-0.5 size-5 shrink-0", h.kind === "reported" ? "text-green-600" : "text-gold-700")}
             />
             <span className={cn("leading-relaxed", tone === "dark" ? "text-ivory-100/85" : "text-ink-700")}>
               <span className="sr-only">{h.kind === "reported" ? "Reported: " : "Upcoming: "}</span>

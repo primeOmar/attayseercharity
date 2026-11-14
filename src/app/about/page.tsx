@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { Photo } from "@/components/ui/photo";
 import { routes } from "@/content/routes";
 import { site } from "@/content/site";
 import { about } from "@/content/pages";
@@ -39,7 +39,7 @@ export default function AboutPage() {
             </p>
           </div>
           <div data-reveal="image" className="relative isolate aspect-[4/5] overflow-hidden rounded-photo lg:col-span-5">
-            <Image src={about.image.src} alt={about.image.alt} fill sizes="(min-width: 1024px) 40vw, 100vw" className="object-cover" />
+            <Photo image={about.image} alt={about.image.alt} fill sizes="(min-width: 1024px) 40vw, 100vw" className="object-cover" />
           </div>
         </div>
       </PageSection>

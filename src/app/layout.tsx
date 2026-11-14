@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Instrument_Serif } from "next/font/google";
+import { Inter_Tight, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import { site } from "@/content/site";
 import { JsonLd, organizationJsonLd, websiteJsonLd } from "@/lib/seo";
@@ -8,10 +8,12 @@ import { SiteFooter } from "@/components/layout/site-footer";
 import { SmoothScroll } from "@/components/layout/smooth-scroll";
 import { ScrollProgress } from "@/components/layout/scroll-progress";
 import { RevealObserver } from "@/components/layout/reveal-observer";
+import { MagneticButtons } from "@/components/layout/magnetic-buttons";
 
-const inter = Inter({
+/** UI sans — a tighter, more geometric companion to the editorial serif. */
+const interTight = Inter_Tight({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-inter-tight",
   display: "swap",
 });
 
@@ -49,7 +51,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${inter.variable} ${instrumentSerif.variable} antialiased`} suppressHydrationWarning>
+    <html lang="en" className={`${interTight.variable} ${instrumentSerif.variable} antialiased`} suppressHydrationWarning>
       {/* Reveal animations switch on only after hydration (see RevealObserver),
           so content is fully visible if JavaScript is slow or unsupported. */}
       <body id="top">
@@ -62,6 +64,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <ScrollProgress />
         <SmoothScroll />
         <RevealObserver />
+        <MagneticButtons />
       </body>
     </html>
   );

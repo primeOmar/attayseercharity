@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { Photo } from "@/components/ui/photo";
 import { volunteer } from "@/content/home";
 import { ButtonLink } from "@/components/ui/button";
 import { Eyebrow, SplitLines } from "@/components/ui/primitives";
@@ -17,8 +17,8 @@ export function VolunteerSection() {
       <div className="relative container-site grid items-center gap-14 lg:grid-cols-12 lg:gap-20">
         <div className="relative lg:col-span-6">
           <div data-reveal="image" className="relative isolate aspect-[4/5] overflow-hidden rounded-photo sm:aspect-[5/4] lg:aspect-[4/5]">
-            <Image
-              src={volunteer.image.src}
+            <Photo
+              image={volunteer.image}
               alt={volunteer.image.alt}
               fill
               sizes="(min-width: 1024px) 45vw, 100vw"

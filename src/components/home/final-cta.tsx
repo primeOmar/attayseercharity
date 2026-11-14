@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { Photo } from "@/components/ui/photo";
 import { finalCta } from "@/content/home";
 import { QuickDonate } from "@/components/donation/quick-donate";
 import { SplitLines } from "@/components/ui/primitives";
@@ -8,8 +8,8 @@ import { LogoMark } from "@/components/ui/logo";
 export function FinalCta() {
   return (
     <section aria-labelledby="final-cta-title" className="relative isolate overflow-hidden bg-gold-200 bg-[linear-gradient(170deg,#fffaf0_0%,#feef99_55%,#fcd460_100%)] py-[var(--spacing-section)] text-ink-950">
-      <Image
-        src={finalCta.image.src}
+      <Photo
+        image={finalCta.image}
         alt={finalCta.image.alt}
         fill
         sizes="100vw"

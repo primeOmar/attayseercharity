@@ -13,7 +13,7 @@ const toneBg = {
 
 export function TransparencySection() {
   return (
-    <section aria-labelledby="transparency-title" className="bg-ivory-50 py-[var(--spacing-section)] text-ink-950">
+    <section aria-labelledby="transparency-title" className="bg-wash-green py-[var(--spacing-section)] text-ink-950">
       <div className="container-site grid gap-16 lg:grid-cols-12">
         <div className="lg:col-span-5">
           <Eyebrow tone="red">{transparency.eyebrow}</Eyebrow>
@@ -62,7 +62,7 @@ export function TransparencySection() {
             ))}
           </ol>
 
-          <div data-reveal className="mt-10 bg-ivory-50 p-6 sm:p-8">
+          <div data-reveal className="mt-10 rounded-photo bg-ivory-50 p-6 sm:p-8">
             <h3 className="eyebrow text-ink-500">Reports</h3>
             <ul className="mt-4 divide-y divide-ink-950/10">
               {transparency.reports.map((r) => (

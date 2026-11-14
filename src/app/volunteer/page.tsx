@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { Photo } from "@/components/ui/photo";
 import { HandHeart, Handshake, Users } from "lucide-react";
 import { routes } from "@/content/routes";
 import { getInvolved } from "@/content/pages";
@@ -37,7 +37,7 @@ export default function GetInvolvedPage() {
       <PageSection tone="dark">
         <div className="grid gap-12 lg:grid-cols-12 lg:items-center lg:gap-16">
           <div data-reveal="image" className="relative isolate aspect-[4/3] overflow-hidden rounded-photo lg:col-span-5">
-            <Image src={volunteer.image.src} alt={volunteer.image.alt} fill sizes="(min-width: 1024px) 40vw, 100vw" className="object-cover" />
+            <Photo image={volunteer.image} alt={volunteer.image.alt} fill sizes="(min-width: 1024px) 40vw, 100vw" className="object-cover" />
           </div>
           <div className="lg:col-span-7">
             <p className="eyebrow text-gold-400">Partnership areas</p>

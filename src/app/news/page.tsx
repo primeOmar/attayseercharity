@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { Photo } from "@/components/ui/photo";
 import Link from "next/link";
 import { ArrowUpRight, CalendarDays } from "lucide-react";
 import { routes } from "@/content/routes";
@@ -19,8 +19,8 @@ export default function NewsPage() {
             <li key={s.slug} data-reveal data-reveal-delay={i * 90}>
               <article className="group relative flex h-full flex-col">
                 <div className="relative isolate aspect-[4/3] overflow-hidden rounded-photo">
-                  <Image
-                    src={s.image.src}
+                  <Photo
+                    image={s.image}
                     alt={s.image.alt}
                     fill
                     sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 100vw"

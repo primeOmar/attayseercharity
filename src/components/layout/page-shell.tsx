@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { Photo } from "@/components/ui/photo";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ChevronRight } from "lucide-react";
@@ -63,7 +63,7 @@ export function PageHeader({
       >
         {image && (
           <>
-            <Image src={image.src} alt="" fill sizes="100vw" loading="eager" fetchPriority="high" className="-z-10 object-cover opacity-45" />
+            <Photo image={image} alt="" fill sizes="100vw" loading="eager" fetchPriority="high" className="-z-10 object-cover opacity-45" />
             <div aria-hidden="true" className="absolute inset-0 -z-10 bg-gradient-to-t from-ink-950 via-ink-950/60 to-ink-950/40" />
           </>
         )}
@@ -97,8 +97,9 @@ export function PageHeader({
 
 const sectionTones = {
   light: "bg-ivory-50 text-ink-950",
-  warm: "bg-ivory-100 text-ink-950",
-  sand: "bg-ivory-200 text-ink-950",
+  // Tonal washes: brand tones at 8–12% (see --color-wash-* in globals.css).
+  warm: "bg-wash-green text-ink-950",
+  sand: "bg-wash-gold text-ink-950",
   dark: "bg-ink-950 text-ivory-50",
 } as const;
 
@@ -166,8 +167,10 @@ export function PageCta({
           <p className="mt-4 leading-relaxed text-ivory-100/75">{body}</p>
         </div>
         <div className="flex flex-wrap gap-3">
-          <ButtonLink href="/volunteer">Get involved</ButtonLink>
-          <ButtonLink href="/contact" variant="outline" arrow={false}>
+          <ButtonLink href="/volunteer" magnetic>
+            Get involved
+          </ButtonLink>
+          <ButtonLink href="/contact" variant="outline" arrow={false} magnetic>
             Contact us
           </ButtonLink>
         </div>

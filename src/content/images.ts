@@ -1,4 +1,5 @@
 import type { ImageAsset } from "@/types/content";
+import blur from "./blur.json";
 
 /**
  * Image library.
@@ -12,7 +13,7 @@ import type { ImageAsset } from "@/types/content";
  */
 const u = (id: string) => `Unsplash photo ${id}`;
 
-export const images = {
+const library = {
   heroSchoolWalk: {
     src: "/images/hero-school-walk.jpg",
     alt: "A group of schoolchildren carrying bags and water containers walk together across dry savanna",
@@ -162,8 +163,16 @@ export const images = {
   },
 } satisfies Record<string, ImageAsset>;
 
+/** Attach the generated blur placeholder to an asset (see scripts/generate-blur.mjs). */
+const withBlur = <T extends ImageAsset>(img: T): T => ({ ...img, blurDataURL: (blur as Record<string, string>)[img.src] });
+
+export const images = Object.fromEntries(
+  Object.entries(library).map(([k, v]) => [k, withBlur(v)]),
+) as { [K in keyof typeof library]: ImageAsset };
+
 /** Small images that fan out behind the mission headline. */
-export const collage: ImageAsset[] = [
+export const collage: ImageAsset[] = (
+  [
   { src: "/images/collage-1.jpg", alt: "", width: 800, height: 1200, credit: u("1547496613-4e19af6736dc") },
   { src: "/images/collage-2.jpg", alt: "", width: 800, height: 1000, credit: u("1664990594667-9bd4c60cbcfb") },
   { src: "/images/collage-3.jpg", alt: "", width: 800, height: 533, credit: u("1576830886922-02b61aee42ad") },
@@ -172,4 +181,5 @@ export const collage: ImageAsset[] = [
   { src: "/images/collage-6.jpg", alt: "", width: 800, height: 1208, credit: u("1543335547-334c05de28c2") },
   { src: "/images/collage-7.jpg", alt: "", width: 800, height: 533, credit: u("1744809495173-217ca4faa8bc") },
   { src: "/images/collage-8.jpg", alt: "", width: 800, height: 533, credit: u("1509099342178-e323b1717dba") },
-];
+  ] satisfies ImageAsset[]
+).map(withBlur);
