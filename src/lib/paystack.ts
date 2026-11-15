@@ -13,14 +13,23 @@ import type { CurrencyCode } from "@/types/content";
 const API = "https://api.paystack.co";
 
 /** Currencies this foundation's Paystack (Kenya) account can charge in. */
-// USD needs enabling by Paystack on the merchant account (currently rejected).
-export const PAYSTACK_CURRENCIES = ["KES"] as const satisfies readonly CurrencyCode[];
+export const PAYSTACK_CURRENCIES = ["KES", "USD"] as const satisfies readonly CurrencyCode[];
 export type PaystackCurrency = (typeof PAYSTACK_CURRENCIES)[number];
 
 /** Sensible bounds, in major units, so typos ("250000000") are caught early. */
 export const AMOUNT_LIMITS: Record<PaystackCurrency, { min: number; max: number }> = {
   KES: { min: 100, max: 1_000_000 },
+  USD: { min: 2, max: 10_000 },
 };
+
+/**
+ * Can we charge USD natively? Paystack must enable USD on the merchant account
+ * first (it currently rejects it). Until then USD gifts are charged as the KES
+ * equivalent — see app/donate/actions.ts.
+ */
+export function paystackUsdEnabled() {
+  return process.env.PAYSTACK_USD_ENABLED === "true";
+}
 
 export function paystackConfigured() {
   return Boolean(process.env.PAYSTACK_SECRET_KEY);
@@ -88,7 +97,14 @@ export interface VerifiedTransaction {
   paid_at: string | null;
   channel: string;
   customer: { email: string };
-  metadata: { donor_name?: string; frequency?: string; designation?: string } | null;
+  metadata: {
+    donor_name?: string;
+    frequency?: string;
+    designation?: string;
+    /** Present when a USD gift was charged as KES. */
+    pledged_amount?: number;
+    pledged_currency?: string;
+  } | null;
   plan?: unknown;
 }
 

@@ -58,11 +58,11 @@ export const site = {
 export const donation = {
   defaultCurrency: "KES" as CurrencyCode,
   /**
-   * What our Paystack account can charge in — see lib/paystack.ts. KES only for
-   * now (Paystack rejects USD for this merchant); add "USD" here and in
-   * PAYSTACK_CURRENCIES once Paystack enables it. The picker hides with one option.
+   * Currencies donors can choose. Kenyan visitors default to KES, everyone else
+   * to USD (see use-visitor-currency.ts). USD is charged natively once Paystack
+   * enables it (PAYSTACK_USD_ENABLED=true), otherwise as the KES equivalent.
    */
-  currencies: ["KES"] as CurrencyCode[],
+  currencies: ["KES", "USD"] as CurrencyCode[],
   /** Preset amounts per currency for the quick selector. */
   presets: {
     KES: [1000, 2500, 5000, 10000],

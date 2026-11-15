@@ -7,12 +7,16 @@ import { startDonation, type DonateState } from "@/app/donate/actions";
 import { donation } from "@/content/site";
 import type { CurrencyCode, DonationFrequency } from "@/types/content";
 import { cn, formatCurrency } from "@/lib/utils";
+import { CurrencyToggle } from "./currency-toggle";
+import { rememberCurrency, useVisitorCurrency } from "./use-visitor-currency";
 
 export interface DonateFormProps {
   /** Paystack keys present? If not, the form explains and points to contact. */
   enabled: boolean;
   /** Sandbox keys (sk_test_…): show the test-card hint. */
   testMode: boolean;
+  /** Set while USD is charged as KES: today’s USD→KES rate, for the estimate. */
+  usdRate?: number | null;
   designations: { value: string; label: string; group: "Programmes" | "Initiatives" }[];
   initial?: { frequency?: DonationFrequency; currency?: CurrencyCode; amount?: number; designation?: string };
 }
@@ -24,7 +28,7 @@ const field =
  * Full donation form → server action → Paystack hosted checkout.
  * Card and M-Pesa details are entered on Paystack's page, never on this site.
  */
-export function DonateForm({ enabled, testMode, designations, initial }: DonateFormProps) {
+export function DonateForm({ enabled, testMode, usdRate, designations, initial }: DonateFormProps) {
   const uid = useId();
   const [state, action, pending] = useActionState<DonateState, FormData>(startDonation, {});
 
@@ -35,6 +39,14 @@ export function DonateForm({ enabled, testMode, designations, initial }: DonateF
   const initialIsPreset = initial?.amount != null && presets.includes(initial.amount);
   const [preset, setPreset] = useState<string>(String(initialIsPreset ? initial!.amount : presets[1]));
   const [custom, setCustom] = useState(initial?.amount != null && !initialIsPreset ? String(initial.amount) : "");
+
+  const changeCurrency = (c: CurrencyCode) => {
+    setCurrency(c);
+    setPreset(String(donation.presets[c][1]));
+    setCustom("");
+  };
+  // Kenya → KSh, elsewhere → USD (unless the donor chose before or the URL says).
+  useVisitorCurrency(changeCurrency, Boolean(initial?.currency));
 
   const effective = custom ? Number(custom) : Number(preset);
   const valid = Number.isFinite(effective) && effective > 0;
@@ -81,39 +93,13 @@ export function DonateForm({ enabled, testMode, designations, initial }: DonateF
           </div>
         </fieldset>
 
-        {/* Picker only when there is a choice; otherwise send the one currency. */}
-
-        {donation.currencies.length > 1 ? (
-
-          <div className="flex items-center gap-2">
-            <label htmlFor={`${uid}-currency`} className="text-sm text-ink-700">
-              Currency
-            </label>
-            <select
-              id={`${uid}-currency`}
-              name="currency"
-              value={currency}
-              onChange={(e) => {
-                const c = e.target.value as CurrencyCode;
-                setCurrency(c);
-                setPreset(String(donation.presets[c][1]));
-                setCustom("");
-              }}
-              className="h-10 rounded-pill border border-ink-950/15 bg-white px-4 text-sm text-ink-950"
-            >
-              {donation.currencies.map((c) => (
-                <option key={c} value={c}>
-                  {c}
-                </option>
-              ))}
-            </select>
-          </div>
-
-        ) : (
-
-          <input type="hidden" name="currency" value={currency} />
-
-        )}
+        <CurrencyToggle
+          value={currency}
+          onChange={(c) => {
+            rememberCurrency(c);
+            changeCurrency(c);
+          }}
+        />
       </div>
 
       <fieldset className="mt-6 min-w-0">
@@ -169,6 +155,12 @@ export function DonateForm({ enabled, testMode, designations, initial }: DonateF
             className="w-0 min-w-0 flex-1 bg-transparent text-base text-ink-950 placeholder:text-ink-500 focus:outline-none"
           />
         </label>
+        {currency === "USD" && usdRate && valid && (
+          <p className="mt-2 text-sm text-ink-700">
+            Charged in Kenyan shillings: <strong className="font-medium text-ink-950">≈ {formatCurrency(Math.ceil((effective * usdRate) / 10) * 10, "KES")}</strong>{" "}
+            at today’s rate. Your card provider converts it.
+          </p>
+        )}
         {state.fieldErrors?.amount && (
           <p id={`${uid}-amount-error`} className="mt-2 text-sm text-red-700">
             {state.fieldErrors.amount}

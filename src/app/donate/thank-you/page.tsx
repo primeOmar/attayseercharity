@@ -75,7 +75,9 @@ async function Outcome({ searchParams }: Pick<PageProps<"/donate/thank-you">, "s
   }
 
   if (tx.status === "success") {
-    const amount = formatCurrency(fromSubunit(tx.amount), tx.currency as CurrencyCode);
+    const charged = formatCurrency(fromSubunit(tx.amount), tx.currency as CurrencyCode);
+    const pledged = tx.metadata?.pledged_currency === "USD" && tx.metadata.pledged_amount;
+    const amount = pledged ? `${formatCurrency(pledged, "USD")} (charged as ${charged})` : charged;
     const name = tx.metadata?.donor_name?.split(" ")[0];
     const designation = tx.metadata?.designation;
     const destination =

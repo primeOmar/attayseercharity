@@ -5,6 +5,8 @@ import { ArrowUpRight, Lock } from "lucide-react";
 import type { CurrencyCode, DonationFrequency } from "@/types/content";
 import { donation } from "@/content/site";
 import { cn, formatCurrency } from "@/lib/utils";
+import { CurrencyToggle } from "./currency-toggle";
+import { rememberCurrency, useVisitorCurrency } from "./use-visitor-currency";
 
 /**
  * Quick donation selector.
@@ -18,6 +20,14 @@ export function QuickDonate() {
   const presets = donation.presets[currency];
   const [amount, setAmount] = useState<string>(String(presets[1]));
   const [custom, setCustom] = useState("");
+
+  const changeCurrency = (c: CurrencyCode) => {
+    setCurrency(c);
+    setAmount(String(donation.presets[c][1]));
+    setCustom("");
+  };
+  // Kenya → KSh, elsewhere → USD (unless the donor chose before).
+  useVisitorCurrency(changeCurrency);
 
   const effective = custom ? Number(custom) : Number(amount);
   const valid = Number.isFinite(effective) && effective > 0;
@@ -59,40 +69,13 @@ export function QuickDonate() {
           </div>
         </fieldset>
 
-        {/* Currency */}
-        {/* Picker only when there is a choice; otherwise send the one currency. */}
-
-        {donation.currencies.length > 1 ? (
-
-          <div className="flex items-center gap-2">
-            <label htmlFor={`${uid}-currency`} className="text-sm text-ink-700">
-              Currency
-            </label>
-            <select
-              id={`${uid}-currency`}
-              name="currency"
-              value={currency}
-              onChange={(e) => {
-                const c = e.target.value as CurrencyCode;
-                setCurrency(c);
-                setAmount(String(donation.presets[c][1]));
-                setCustom("");
-              }}
-              className="h-10 rounded-pill border border-ink-950/15 bg-white px-4 text-sm text-ink-950"
-            >
-              {donation.currencies.map((c) => (
-                <option key={c} value={c}>
-                  {c}
-                </option>
-              ))}
-            </select>
-          </div>
-
-        ) : (
-
-          <input type="hidden" name="currency" value={currency} />
-
-        )}
+        <CurrencyToggle
+          value={currency}
+          onChange={(c) => {
+            rememberCurrency(c);
+            changeCurrency(c);
+          }}
+        />
       </div>
 
       {/* Amounts */}

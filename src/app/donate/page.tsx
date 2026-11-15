@@ -7,7 +7,8 @@ import { ContactCards } from "@/components/contact/contact-cards";
 import { CampaignCard } from "@/components/campaigns/campaign-card";
 import { pad2 } from "@/lib/utils";
 import { DonateForm, DonateFormFromQuery } from "@/components/donation/donate-form";
-import { paystackConfigured, paystackTestMode } from "@/lib/paystack";
+import { paystackConfigured, paystackTestMode, paystackUsdEnabled } from "@/lib/paystack";
+import { usdToKesRate } from "@/lib/fx";
 
 const route = routes.donate;
 export const metadata = routeMetadata(route);
@@ -21,8 +22,14 @@ const designations = [
  * Online giving via Paystack (hosted checkout — see app/donate/actions.ts).
  * The page stays static; only the query-string pre-fill is read on the client.
  */
-export default function SupportPage() {
-  const formProps = { enabled: paystackConfigured(), testMode: paystackTestMode(), designations };
+export default async function SupportPage() {
+  const formProps = {
+    enabled: paystackConfigured(),
+    testMode: paystackTestMode(),
+    // Cached for hours (use cache), so the page stays static.
+    usdRate: paystackUsdEnabled() ? null : await usdToKesRate(),
+    designations,
+  };
 
   return (
     <>
