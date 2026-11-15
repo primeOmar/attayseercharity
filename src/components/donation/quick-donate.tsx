@@ -24,7 +24,7 @@ export function QuickDonate() {
 
   return (
     <form
-      action="/donate"
+      action="/donate#give"
       method="get"
       className="w-full max-w-xl min-w-0 rounded-lg border border-ink-950/10 bg-white p-5 text-left shadow-[0_40px_80px_-40px_rgb(11_10_8/0.45)] sm:p-8"
       onSubmit={(e) => {
@@ -60,29 +60,39 @@ export function QuickDonate() {
         </fieldset>
 
         {/* Currency */}
-        <div className="flex items-center gap-2">
-          <label htmlFor={`${uid}-currency`} className="text-sm text-ink-700">
-            Currency
-          </label>
-          <select
-            id={`${uid}-currency`}
-            name="currency"
-            value={currency}
-            onChange={(e) => {
-              const c = e.target.value as CurrencyCode;
-              setCurrency(c);
-              setAmount(String(donation.presets[c][1]));
-              setCustom("");
-            }}
-            className="h-10 rounded-pill border border-ink-950/15 bg-white px-4 text-sm text-ink-950"
-          >
-            {donation.currencies.map((c) => (
-              <option key={c} value={c}>
-                {c}
-              </option>
-            ))}
-          </select>
-        </div>
+        {/* Picker only when there is a choice; otherwise send the one currency. */}
+
+        {donation.currencies.length > 1 ? (
+
+          <div className="flex items-center gap-2">
+            <label htmlFor={`${uid}-currency`} className="text-sm text-ink-700">
+              Currency
+            </label>
+            <select
+              id={`${uid}-currency`}
+              name="currency"
+              value={currency}
+              onChange={(e) => {
+                const c = e.target.value as CurrencyCode;
+                setCurrency(c);
+                setAmount(String(donation.presets[c][1]));
+                setCustom("");
+              }}
+              className="h-10 rounded-pill border border-ink-950/15 bg-white px-4 text-sm text-ink-950"
+            >
+              {donation.currencies.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
+            </select>
+          </div>
+
+        ) : (
+
+          <input type="hidden" name="currency" value={currency} />
+
+        )}
       </div>
 
       {/* Amounts */}

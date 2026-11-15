@@ -57,7 +57,12 @@ export const site = {
 
 export const donation = {
   defaultCurrency: "KES" as CurrencyCode,
-  currencies: ["KES", "USD", "EUR", "GBP"] as CurrencyCode[],
+  /**
+   * What our Paystack account can charge in — see lib/paystack.ts. KES only for
+   * now (Paystack rejects USD for this merchant); add "USD" here and in
+   * PAYSTACK_CURRENCIES once Paystack enables it. The picker hides with one option.
+   */
+  currencies: ["KES"] as CurrencyCode[],
   /** Preset amounts per currency for the quick selector. */
   presets: {
     KES: [1000, 2500, 5000, 10000],

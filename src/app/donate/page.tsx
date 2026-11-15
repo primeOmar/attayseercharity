@@ -1,28 +1,53 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { routes } from "@/content/routes";
 import { campaigns, causes, donationProcess } from "@/content/home";
 import { PageCta, PageHeader, PageSection, routeMetadata } from "@/components/layout/page-shell";
 import { ContactCards } from "@/components/contact/contact-cards";
 import { CampaignCard } from "@/components/campaigns/campaign-card";
 import { pad2 } from "@/lib/utils";
+import { DonateForm, DonateFormFromQuery } from "@/components/donation/donate-form";
+import { paystackConfigured, paystackTestMode } from "@/lib/paystack";
 
 const route = routes.donate;
 export const metadata = routeMetadata(route);
 
+const designations = [
+  ...causes.map((c) => ({ value: c.slug, label: c.title, group: "Programmes" as const })),
+  ...campaigns.map((c) => ({ value: c.slug, label: c.title, group: "Initiatives" as const })),
+];
+
 /**
- * The foundation does not publish payment details; supporters arrange giving
- * directly with the team. Replace with a payment flow once one is approved.
+ * Online giving via Paystack (hosted checkout — see app/donate/actions.ts).
+ * The page stays static; only the query-string pre-fill is read on the client.
  */
 export default function SupportPage() {
+  const formProps = { enabled: paystackConfigured(), testMode: paystackTestMode(), designations };
+
   return (
     <>
       <PageHeader eyebrow={route.eyebrow} title={route.title} description={route.description} path={route.path} image={route.image} />
 
       <PageSection
-        eyebrow="Arrange your support"
-        title="Talk to us first."
-        intro="To make sure every contribution goes where it is most needed, we agree support arrangements directly with individuals and institutions. Reach out and we’ll share current needs."
+        id="give"
+        eyebrow="Give online"
+        title="Make your gift."
+        intro="Choose an amount and where you’d like it to go. You’ll complete payment securely on Paystack by card or M-Pesa, and receive an emailed receipt."
         tone="warm"
+      >
+        <div className="max-w-2xl">
+          {/* useSearchParams needs a Suspense boundary; the fallback is the same form, unfilled. */}
+          <Suspense fallback={<DonateForm {...formProps} />}>
+            <DonateFormFromQuery {...formProps} />
+          </Suspense>
+        </div>
+      </PageSection>
+
+      <PageSection
+        eyebrow="Other ways to give"
+        title="Institutions and in-kind support."
+        intro="Giving as an organisation, sponsoring a learner, or donating supplies? Talk to us and we’ll agree the details together."
+        tone="light"
       >
         <ContactCards subject="Supporting Attayseer Development Foundation" />
       </PageSection>
